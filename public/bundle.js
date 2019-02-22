@@ -93971,6 +93971,42 @@ function (_Component) {
 
 /***/ }),
 
+/***/ "./src/shared/HomeScreen/CreateWallet.js":
+/*!***********************************************!*\
+  !*** ./src/shared/HomeScreen/CreateWallet.js ***!
+  \***********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var mobx_react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-react/index.module.js");
+/* harmony import */ var _material_ui_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/index.es.js");
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = (Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["inject"])('adcInfoStore')(Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["observer"])(function (_ref) {
+  var adcInfoStore = _ref.adcInfoStore;
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Grid"], {
+    item: true
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Typography"], {
+    color: "secondary",
+    variant: "headline"
+  }, "It looks like you have not yet set up a wallet")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Grid"], {
+    item: true
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Button"], {
+    color: "secondary",
+    onClick: function onClick(evt) {
+      return adcInfoStore.createWallet();
+    },
+    variant: "contained"
+  }, "Create ADC Wallet")));
+})));
+
+/***/ }),
+
 /***/ "./src/shared/HomeScreen/HomeScreen.js":
 /*!*********************************************!*\
   !*** ./src/shared/HomeScreen/HomeScreen.js ***!
@@ -93984,6 +94020,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var mobx_react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-react/index.module.js");
 /* harmony import */ var _material_ui_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/index.es.js");
+/* harmony import */ var _CreateWallet__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./CreateWallet */ "./src/shared/HomeScreen/CreateWallet.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -94001,6 +94038,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
 
 
 
@@ -94053,14 +94091,13 @@ function (_Component) {
         container: true,
         alignItems: "center",
         className: classes.container,
+        direction: "column",
         justify: "center"
       }, adcInfoStore.init.match({
         pending: WalletLoading,
         rejected: WalletUnavailable,
         resolved: function resolved() {
-          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Grid"], {
-            item: true
-          }, "Home Screen");
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_CreateWallet__WEBPACK_IMPORTED_MODULE_3__["default"], null);
         }
       }));
     }
@@ -94170,67 +94207,67 @@ function makeApiRequest(_x, _x2) {
 function _makeApiRequest() {
   _makeApiRequest = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee3(url, params) {
-    return regeneratorRuntime.wrap(function _callee3$(_context3) {
+  regeneratorRuntime.mark(function _callee4(url, params) {
+    return regeneratorRuntime.wrap(function _callee4$(_context4) {
       while (1) {
-        switch (_context3.prev = _context3.next) {
+        switch (_context4.prev = _context4.next) {
           case 0:
-            return _context3.abrupt("return", new Promise(
+            return _context4.abrupt("return", new Promise(
             /*#__PURE__*/
             function () {
               var _ref = _asyncToGenerator(
               /*#__PURE__*/
-              regeneratorRuntime.mark(function _callee2(resolve, reject) {
+              regeneratorRuntime.mark(function _callee3(resolve, reject) {
                 var query, requestUrl, rawResponse, response;
-                return regeneratorRuntime.wrap(function _callee2$(_context2) {
+                return regeneratorRuntime.wrap(function _callee3$(_context3) {
                   while (1) {
-                    switch (_context2.prev = _context2.next) {
+                    switch (_context3.prev = _context3.next) {
                       case 0:
-                        _context2.prev = 0;
+                        _context3.prev = 0;
                         query = params ? "?".concat(querystring__WEBPACK_IMPORTED_MODULE_1___default.a.stringify(params)) : '';
                         requestUrl = "".concat(api, "/").concat(url).concat(query);
-                        _context2.next = 5;
+                        _context3.next = 5;
                         return node_fetch__WEBPACK_IMPORTED_MODULE_0___default()(requestUrl, {
                           method: 'GET'
                         });
 
                       case 5:
-                        rawResponse = _context2.sent;
+                        rawResponse = _context3.sent;
                         console.log(rawResponse.ok, rawResponse.status);
 
                         if (!rawResponse.ok) {
-                          _context2.next = 14;
+                          _context3.next = 14;
                           break;
                         }
 
-                        _context2.next = 10;
+                        _context3.next = 10;
                         return rawResponse.json();
 
                       case 10:
-                        response = _context2.sent;
+                        response = _context3.sent;
                         resolve(response);
-                        _context2.next = 15;
+                        _context3.next = 15;
                         break;
 
                       case 14:
                         reject(new Error("Request did not complete successfully."));
 
                       case 15:
-                        _context2.next = 21;
+                        _context3.next = 21;
                         break;
 
                       case 17:
-                        _context2.prev = 17;
-                        _context2.t0 = _context2["catch"](0);
-                        console.log('ERROR: ', _context2.t0);
-                        reject(_context2.t0);
+                        _context3.prev = 17;
+                        _context3.t0 = _context3["catch"](0);
+                        console.log('ERROR: ', _context3.t0);
+                        reject(_context3.t0);
 
                       case 21:
                       case "end":
-                        return _context2.stop();
+                        return _context3.stop();
                     }
                   }
-                }, _callee2, this, [[0, 17]]);
+                }, _callee3, this, [[0, 17]]);
               }));
 
               return function (_x3, _x4) {
@@ -94240,10 +94277,10 @@ function _makeApiRequest() {
 
           case 1:
           case "end":
-            return _context3.stop();
+            return _context4.stop();
         }
       }
-    }, _callee3, this);
+    }, _callee4, this);
   }));
   return _makeApiRequest.apply(this, arguments);
 }
@@ -94256,16 +94293,16 @@ function () {
   }
 
   _createClass(NodeApi, [{
-    key: "getInfo",
+    key: "createNewAddress",
     value: function () {
-      var _getInfo = _asyncToGenerator(
+      var _createNewAddress = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee() {
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                return _context.abrupt("return", makeApiRequest('getInfo'));
+                return _context.abrupt("return", makeApiRequest('createNewAddress'));
 
               case 1:
               case "end":
@@ -94273,6 +94310,34 @@ function () {
             }
           }
         }, _callee, this);
+      }));
+
+      function createNewAddress() {
+        return _createNewAddress.apply(this, arguments);
+      }
+
+      return createNewAddress;
+    }()
+  }, {
+    key: "getInfo",
+    value: function () {
+      var _getInfo = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee2() {
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                return _context2.abrupt("return", new Promise(function (y, n) {
+                  return y({});
+                }));
+
+              case 1:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
       }));
 
       function getInfo() {
@@ -94322,6 +94387,7 @@ function () {
   function AdcInfoStore(nodeApi) {
     _classCallCheck(this, AdcInfoStore);
 
+    this.address = null;
     this.isNodeActive = false;
     this.nodeApi = nodeApi;
   }
@@ -94342,8 +94408,9 @@ function () {
 
               case 2:
                 info = _context.sent;
+                console.log(info);
 
-              case 3:
+              case 4:
               case "end":
                 return _context.stop();
             }
@@ -94357,6 +94424,44 @@ function () {
 
       return init;
     }()
+  }, {
+    key: "createWallet",
+    value: function () {
+      var _createWallet = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee2() {
+        var address;
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return this.nodeApi.createNewAddress();
+
+              case 2:
+                address = _context2.sent;
+                console.log(address);
+                this.address = address;
+
+              case 5:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function createWallet() {
+        return _createWallet.apply(this, arguments);
+      }
+
+      return createWallet;
+    }()
+  }, {
+    key: "hasAddress",
+    get: function get() {
+      return this.address !== null;
+    }
   }]);
 
   return AdcInfoStore;
@@ -94364,6 +94469,9 @@ function () {
 
 
 Object(mobx__WEBPACK_IMPORTED_MODULE_0__["decorate"])(AdcInfoStore, {
+  address: mobx__WEBPACK_IMPORTED_MODULE_0__["observable"],
+  createWallet: mobx_task__WEBPACK_IMPORTED_MODULE_1__["task"],
+  hasAddress: mobx__WEBPACK_IMPORTED_MODULE_0__["computed"],
   init: mobx_task__WEBPACK_IMPORTED_MODULE_1__["task"]
 });
 

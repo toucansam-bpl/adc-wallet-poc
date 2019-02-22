@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { inject, observer, } from 'mobx-react'
 import { Grid, Typography, withStyles, } from '@material-ui/core'
 
+import CreateWallet from './CreateWallet'
+
 const styles = theme => ({
   container: {
     height: '100%',
@@ -28,13 +30,16 @@ class HomeScreen extends Component {
     const { adcInfoStore, classes, } = this.props
     
     return (
-      <Grid container alignItems="center" className={classes.container} justify="center">
+      <Grid container
+        alignItems="center"
+        className={classes.container}
+        direction="column"
+        justify="center"
+      >
         {adcInfoStore.init.match({
           pending: WalletLoading,
           rejected: WalletUnavailable,
-          resolved: () => (
-            <Grid item>Home Screen</Grid>
-          )
+          resolved: () => <CreateWallet />,
         })} 
       </Grid>
     )

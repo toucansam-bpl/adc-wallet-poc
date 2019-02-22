@@ -18,6 +18,7 @@ const apiResponder = (fn) => {
   }
 }
 
+app.get('/createNewAddress', apiResponder(() => adc.getNewAddress()))
 app.get('/getInfo', apiResponder(() => adc.getInfo()))
 
 export default app
