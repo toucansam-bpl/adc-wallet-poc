@@ -6,9 +6,9 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import green from '@material-ui/core/colors/green'
 import red from '@material-ui/core/colors/red'
 
-
 import App from '../shared/App'
 import AdcInfoStore from '../shared/stores/AdcInfoStore'
+import NodeApi from '../shared/domain/NodeApi'
 
 
 class Main extends React.Component {
@@ -35,11 +35,14 @@ const theme = createMuiTheme({
 })
 
 
-const adcInfoStore = new AdcInfoStore()
+const nodeApi = new NodeApi()
+const adcInfoStore = new AdcInfoStore(nodeApi)
 
 const stores = {
   adcInfoStore,
 }
+
+adcInfoStore.init()
 
 
 hydrate(

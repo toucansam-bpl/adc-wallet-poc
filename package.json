@@ -1,5 +1,5 @@
 {
-  "name": "node-adc",
+  "name": "adc-wallet-poc",
   "private": true,
   "license": "MIT",
   "scripts": {
@@ -12,6 +12,8 @@
     "express": "^4.16.4",
     "mobx": "^5.9.0",
     "mobx-react": "^5.4.3",
+    "mobx-task": "^1.0.1",
+    "node-adc": "git+https://github.com/toucansam-bpl/node-adc",
     "node-fetch": "^2.3.0",
     "react": "^16.8.2",
     "react-dom": "^16.8.2",

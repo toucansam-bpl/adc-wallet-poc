@@ -53201,6 +53201,371 @@ if ((typeof __MOBX_DEVTOOLS_GLOBAL_HOOK__ === "undefined" ? "undefined" : _typeo
 
 /***/ }),
 
+/***/ "./node_modules/mobx-task/lib/index.js":
+/*!*********************************************!*\
+  !*** ./node_modules/mobx-task/lib/index.js ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * mobx-task
+ *
+ * Copyright © Jeff Hansen 2017.
+ * MIT licensed.
+ */
+module.exports.task = __webpack_require__(/*! ./task */ "./node_modules/mobx-task/lib/task.js");
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+
+/***/ "./node_modules/mobx-task/lib/task.js":
+/*!********************************************!*\
+  !*** ./node_modules/mobx-task/lib/task.js ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var _require = __webpack_require__(/*! mobx */ "./node_modules/mobx/lib/mobx.module.js"),
+    observable = _require.observable,
+    action = _require.action;
+
+var _require2 = __webpack_require__(/*! ./utils */ "./node_modules/mobx-task/lib/utils.js"),
+    proxyGetters = _require2.proxyGetters,
+    promiseTry = _require2.promiseTry;
+/**
+ * Wraps the given function in a task function.
+ *
+ * @param  {Function} fn
+ * @return {Task}
+ */
+
+
+function createTask(fn, opts) {
+  opts = _objectSpread({
+    swallow: false,
+    state: 'pending',
+    args: []
+  }, opts); // Track how many times this task was called.
+  // Used to prevent premature state changes when the
+  // task is called again before the first run completes.
+
+  var callCount = 0;
+  /**
+   * The actual task function.
+   */
+
+  function task() {
+    var _this = this,
+        _arguments = arguments;
+
+    var callCountWhenStarted = ++callCount;
+    return promiseTry(function () {
+      task.setState({
+        state: 'pending',
+        error: undefined,
+        result: undefined,
+        args: Array.from(_arguments)
+      });
+      return Promise.resolve(fn.apply(_this, _arguments)).then(function (result) {
+        // If we called the task again before the first
+        // one completes, we don't want to set to resolved before the last call completes.
+        if (callCountWhenStarted === callCount) {
+          task.setState({
+            state: 'resolved',
+            error: undefined,
+            result: result
+          });
+        }
+
+        return result;
+      });
+    }).catch(function (err) {
+      if (callCountWhenStarted === callCount) {
+        task.setState({
+          state: 'rejected',
+          error: err,
+          result: undefined
+        });
+      }
+
+      if (!opts.swallow) {
+        throw err;
+      }
+    });
+  }
+
+  var taskStateSchema = {
+    state: opts.state,
+    error: opts.error,
+    result: opts.result,
+    args: opts.args,
+
+    get pending() {
+      return taskState.state === 'pending';
+    },
+
+    get resolved() {
+      return taskState.state === 'resolved';
+    },
+
+    get rejected() {
+      return taskState.state === 'rejected';
+    }
+
+  };
+  var taskStateSchemaKeys = Object.keys(taskStateSchema);
+  var taskState = observable.object(taskStateSchema, {
+    error: observable.ref,
+    result: observable.ref,
+    args: observable.ref
+  }, {
+    deep: false
+  });
+  setupTask(task, taskState, taskStateSchemaKeys, opts);
+  return task;
+}
+/**
+ * Assigns the task methods and state to the given function.
+ */
+
+
+function setupTask(fn, taskState, taskStateSchemaKeys, opts) {
+  var setup = function setup(func) {
+    return setupTask(func, taskState, taskStateSchemaKeys, opts);
+  };
+
+  proxyGetters(fn, taskState, taskStateSchemaKeys);
+  Object.assign(fn, {
+    /**
+     * Patch `bind` so we always return
+     * the task function (with the additional properties)
+     */
+    bind: function bind() {
+      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+
+      var bound = Function.prototype.bind.apply(fn, args);
+      return setup(bound);
+    },
+
+    /**
+     * Wraps the task and returns the new function with the task stuff attached.
+     *
+     * @param {Function} wrapper
+     * Invoked with the inner function as the only parameter.
+     *
+     * @return {Task}
+     * Wrapped function as a task.
+     */
+    wrap: function wrap(wrapper) {
+      return setup(wrapper(function wrapped() {
+        return fn.apply(this, arguments);
+      }));
+    },
+
+    /**
+     * Assigns the given properties to the task.
+     * E.g. task.setState({ state: 'resolved', result: 1337 })
+     */
+    setState: action(function (opts) {
+      Object.assign(taskState, opts);
+      return fn;
+    }),
+
+    /**
+     * Given an object, returns the value for the key which equals the
+     * current state, or undefined if not specified.
+     */
+    match: function match(obj) {
+      var state = taskState.state;
+      var match = obj[state];
+
+      if (!match) {
+        return undefined;
+      }
+
+      switch (state) {
+        case 'pending':
+          return match.apply(null, taskState.args);
+
+        case 'resolved':
+          return match(taskState.result);
+
+        case 'rejected':
+          return match(taskState.error);
+
+        /* istanbul ignore next */
+
+        default:
+          return match();
+      }
+    },
+
+    /**
+     * Resets the state to what it was when initialized.
+     */
+    reset: function reset() {
+      fn.setState({
+        state: opts.state,
+        result: opts.result,
+        error: opts.error
+      });
+      return fn;
+    }
+  });
+  return fn;
+}
+/**
+ * Returns a function, which returns either a decorator, a task, or a decorator factory.
+ */
+
+
+function taskCreatorFactory(opts) {
+  /**
+   * Decorator to make async functions "so fucking graceful", by maintaining observables for errors
+   * and running state.
+   */
+  return function task(arg1, arg2, arg3) {
+    if (typeof arg1 === 'function') {
+      // regular invocation
+      return createTask(arg1, _objectSpread({}, opts, arg2));
+    }
+
+    var makeDecorator = function makeDecorator(innerOpts) {
+      return function decorator(target, name, descriptor) {
+        var get = descriptor.get;
+
+        if (descriptor.value) {
+          var fn = descriptor.value;
+          delete descriptor.writable;
+          delete descriptor.value;
+
+          get = function get() {
+            return fn;
+          };
+        } // In IE11 calling Object.defineProperty has a side-effect of evaluating the
+        // getter for the property which is being replaced. This causes infinite
+        // recursion and an "Out of stack space" error.
+        // Credit: autobind-decorator source
+
+
+        var definingProperty = false;
+        return {
+          get: function getter() {
+            /* istanbul ignore next */
+            if (definingProperty) {
+              return get.apply(this);
+            }
+
+            var fn = get.apply(this, arguments);
+            var wrapped = createTask(fn, _objectSpread({}, opts, innerOpts));
+            definingProperty = true;
+            Object.defineProperty(this, name, {
+              value: wrapped,
+              configurable: true,
+              writable: true
+            });
+            definingProperty = false;
+            return wrapped;
+          },
+          set: function setter(newValue) {
+            Object.defineProperty(this, name, {
+              configurable: true,
+              writable: true,
+              // IS enumerable when reassigned by the outside word
+              enumerable: true,
+              value: newValue
+            });
+            return newValue;
+          }
+        };
+      };
+    }; // decorator invocation
+
+
+    if (typeof arg2 === 'string') {
+      // parameterless - @task method()
+      return makeDecorator()(arg1, arg2, arg3);
+    } // parameters - @task({ state: 'resolved' }) method()
+
+
+    return makeDecorator(_objectSpread({}, opts, arg1));
+  };
+}
+
+var task = taskCreatorFactory();
+task.resolved = taskCreatorFactory({
+  state: 'resolved'
+});
+task.rejected = taskCreatorFactory({
+  state: 'rejected'
+});
+module.exports = task;
+//# sourceMappingURL=task.js.map
+
+/***/ }),
+
+/***/ "./node_modules/mobx-task/lib/utils.js":
+/*!*********************************************!*\
+  !*** ./node_modules/mobx-task/lib/utils.js ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * Proxies getters on the target to the object.
+ *
+ * @param  {Object} target
+ * The proxy to add getters to.
+ *
+ * @param  {Object} obj
+ * Object with properties we want to proxy getters to.
+ *
+ * @params {string[]} keys
+ * The keys to proxy.
+ */
+module.exports.proxyGetters = function proxyGetters(target, obj, keys) {
+  keys.map(function (key) {
+    Object.defineProperty(target, key, {
+      get: function get() {
+        return obj[key];
+      }
+    });
+  });
+};
+/**
+ * Invokes the function in a promise-safe way.
+ */
+
+
+module.exports.promiseTry = function promiseTry(fn) {
+  return new Promise(function (resolve, reject) {
+    try {
+      resolve(fn());
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+//# sourceMappingURL=utils.js.map
+
+/***/ }),
+
 /***/ "./node_modules/mobx/lib/mobx.module.js":
 /*!**********************************************!*\
   !*** ./node_modules/mobx/lib/mobx.module.js ***!
@@ -57647,6 +58012,40 @@ if (typeof __MOBX_DEVTOOLS_GLOBAL_HOOK__ === "object") {
 
 /***/ }),
 
+/***/ "./node_modules/node-fetch/browser.js":
+/*!********************************************!*\
+  !*** ./node_modules/node-fetch/browser.js ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+// ref: https://github.com/tc39/proposal-global
+var getGlobal = function () {
+	// the only reliable means to get the global object is
+	// `Function('return this')()`
+	// However, this causes CSP violations in Chrome apps.
+	if (typeof self !== 'undefined') { return self; }
+	if (typeof window !== 'undefined') { return window; }
+	if (typeof global !== 'undefined') { return global; }
+	throw new Error('unable to locate global object');
+}
+
+var global = getGlobal();
+
+module.exports = exports = global.fetch;
+
+// Needed for TypeScript and Webpack.
+exports.default = global.fetch.bind(global);
+
+exports.Headers = global.Headers;
+exports.Request = global.Request;
+exports.Response = global.Response;
+
+/***/ }),
+
 /***/ "./node_modules/normalize-scroll-left/lib/main.js":
 /*!********************************************************!*\
   !*** ./node_modules/normalize-scroll-left/lib/main.js ***!
@@ -61311,6 +61710,215 @@ if (true) {
 var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
 
 module.exports = ReactPropTypesSecret;
+
+
+/***/ }),
+
+/***/ "./node_modules/querystring-es3/decode.js":
+/*!************************************************!*\
+  !*** ./node_modules/querystring-es3/decode.js ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+
+// If obj.hasOwnProperty has been overridden, then calling
+// obj.hasOwnProperty(prop) will break.
+// See: https://github.com/joyent/node/issues/1707
+function hasOwnProperty(obj, prop) {
+  return Object.prototype.hasOwnProperty.call(obj, prop);
+}
+
+module.exports = function(qs, sep, eq, options) {
+  sep = sep || '&';
+  eq = eq || '=';
+  var obj = {};
+
+  if (typeof qs !== 'string' || qs.length === 0) {
+    return obj;
+  }
+
+  var regexp = /\+/g;
+  qs = qs.split(sep);
+
+  var maxKeys = 1000;
+  if (options && typeof options.maxKeys === 'number') {
+    maxKeys = options.maxKeys;
+  }
+
+  var len = qs.length;
+  // maxKeys <= 0 means that we should not limit keys count
+  if (maxKeys > 0 && len > maxKeys) {
+    len = maxKeys;
+  }
+
+  for (var i = 0; i < len; ++i) {
+    var x = qs[i].replace(regexp, '%20'),
+        idx = x.indexOf(eq),
+        kstr, vstr, k, v;
+
+    if (idx >= 0) {
+      kstr = x.substr(0, idx);
+      vstr = x.substr(idx + 1);
+    } else {
+      kstr = x;
+      vstr = '';
+    }
+
+    k = decodeURIComponent(kstr);
+    v = decodeURIComponent(vstr);
+
+    if (!hasOwnProperty(obj, k)) {
+      obj[k] = v;
+    } else if (isArray(obj[k])) {
+      obj[k].push(v);
+    } else {
+      obj[k] = [obj[k], v];
+    }
+  }
+
+  return obj;
+};
+
+var isArray = Array.isArray || function (xs) {
+  return Object.prototype.toString.call(xs) === '[object Array]';
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/querystring-es3/encode.js":
+/*!************************************************!*\
+  !*** ./node_modules/querystring-es3/encode.js ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+
+var stringifyPrimitive = function(v) {
+  switch (typeof v) {
+    case 'string':
+      return v;
+
+    case 'boolean':
+      return v ? 'true' : 'false';
+
+    case 'number':
+      return isFinite(v) ? v : '';
+
+    default:
+      return '';
+  }
+};
+
+module.exports = function(obj, sep, eq, name) {
+  sep = sep || '&';
+  eq = eq || '=';
+  if (obj === null) {
+    obj = undefined;
+  }
+
+  if (typeof obj === 'object') {
+    return map(objectKeys(obj), function(k) {
+      var ks = encodeURIComponent(stringifyPrimitive(k)) + eq;
+      if (isArray(obj[k])) {
+        return map(obj[k], function(v) {
+          return ks + encodeURIComponent(stringifyPrimitive(v));
+        }).join(sep);
+      } else {
+        return ks + encodeURIComponent(stringifyPrimitive(obj[k]));
+      }
+    }).join(sep);
+
+  }
+
+  if (!name) return '';
+  return encodeURIComponent(stringifyPrimitive(name)) + eq +
+         encodeURIComponent(stringifyPrimitive(obj));
+};
+
+var isArray = Array.isArray || function (xs) {
+  return Object.prototype.toString.call(xs) === '[object Array]';
+};
+
+function map (xs, f) {
+  if (xs.map) return xs.map(f);
+  var res = [];
+  for (var i = 0; i < xs.length; i++) {
+    res.push(f(xs[i], i));
+  }
+  return res;
+}
+
+var objectKeys = Object.keys || function (obj) {
+  var res = [];
+  for (var key in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) res.push(key);
+  }
+  return res;
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/querystring-es3/index.js":
+/*!***********************************************!*\
+  !*** ./node_modules/querystring-es3/index.js ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.decode = exports.parse = __webpack_require__(/*! ./decode */ "./node_modules/querystring-es3/decode.js");
+exports.encode = exports.stringify = __webpack_require__(/*! ./encode */ "./node_modules/querystring-es3/encode.js");
 
 
 /***/ }),
@@ -93173,6 +93781,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _material_ui_core_colors_red__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_colors_red__WEBPACK_IMPORTED_MODULE_6__);
 /* harmony import */ var _shared_App__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../shared/App */ "./src/shared/App.js");
 /* harmony import */ var _shared_stores_AdcInfoStore__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../shared/stores/AdcInfoStore */ "./src/shared/stores/AdcInfoStore.js");
+/* harmony import */ var _shared_domain_NodeApi__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../shared/domain/NodeApi */ "./src/shared/domain/NodeApi.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -93190,6 +93799,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
 
 
 
@@ -93240,10 +93850,12 @@ var theme = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_4__["create
     type: 'light'
   }
 });
-var adcInfoStore = new _shared_stores_AdcInfoStore__WEBPACK_IMPORTED_MODULE_8__["default"]();
+var nodeApi = new _shared_domain_NodeApi__WEBPACK_IMPORTED_MODULE_9__["default"]();
+var adcInfoStore = new _shared_stores_AdcInfoStore__WEBPACK_IMPORTED_MODULE_8__["default"](nodeApi);
 var stores = {
   adcInfoStore: adcInfoStore
 };
+adcInfoStore.init();
 Object(react_dom__WEBPACK_IMPORTED_MODULE_2__["hydrate"])(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_4__["MuiThemeProvider"], {
   theme: theme
 }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(mobx_react__WEBPACK_IMPORTED_MODULE_1__["Provider"], stores, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["BrowserRouter"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Main, null)))), document.querySelector('#root'));
@@ -93416,9 +94028,20 @@ function (_Component) {
   _createClass(HomeScreen, [{
     key: "render",
     value: function render() {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Grid"], {
-        container: true
-      }, "Home Screen");
+      var adcInfoStore = this.props.adcInfoStore;
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, adcInfoStore.init.match({
+        pending: function pending() {
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Loading, please wait..");
+        },
+        rejected: function rejected(err) {
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Error: ", err.message);
+        },
+        resolved: function resolved() {
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Grid"], {
+            container: true
+          }, "Home Screen");
+        }
+      }));
     }
   }]);
 
@@ -93491,6 +94114,161 @@ function (_Component) {
 
 /***/ }),
 
+/***/ "./src/shared/domain/NodeApi.js":
+/*!**************************************!*\
+  !*** ./src/shared/domain/NodeApi.js ***!
+  \**************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return NodeApi; });
+/* harmony import */ var node_fetch__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! node-fetch */ "./node_modules/node-fetch/browser.js");
+/* harmony import */ var node_fetch__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(node_fetch__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var querystring__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! querystring */ "./node_modules/querystring-es3/index.js");
+/* harmony import */ var querystring__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(querystring__WEBPACK_IMPORTED_MODULE_1__);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+
+
+var api = '/adc';
+
+function makeApiRequest(_x, _x2) {
+  return _makeApiRequest.apply(this, arguments);
+}
+
+function _makeApiRequest() {
+  _makeApiRequest = _asyncToGenerator(
+  /*#__PURE__*/
+  regeneratorRuntime.mark(function _callee3(url, params) {
+    return regeneratorRuntime.wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            return _context3.abrupt("return", new Promise(
+            /*#__PURE__*/
+            function () {
+              var _ref = _asyncToGenerator(
+              /*#__PURE__*/
+              regeneratorRuntime.mark(function _callee2(resolve, reject) {
+                var query, requestUrl, rawResponse, response;
+                return regeneratorRuntime.wrap(function _callee2$(_context2) {
+                  while (1) {
+                    switch (_context2.prev = _context2.next) {
+                      case 0:
+                        _context2.prev = 0;
+                        query = params ? "?".concat(querystring__WEBPACK_IMPORTED_MODULE_1___default.a.stringify(params)) : '';
+                        requestUrl = "".concat(api, "/").concat(url).concat(query);
+                        _context2.next = 5;
+                        return node_fetch__WEBPACK_IMPORTED_MODULE_0___default()(requestUrl, {
+                          method: 'GET'
+                        });
+
+                      case 5:
+                        rawResponse = _context2.sent;
+                        console.log(rawResponse.ok, rawResponse.status);
+
+                        if (!rawResponse.ok) {
+                          _context2.next = 14;
+                          break;
+                        }
+
+                        _context2.next = 10;
+                        return rawResponse.json();
+
+                      case 10:
+                        response = _context2.sent;
+                        resolve(response);
+                        _context2.next = 15;
+                        break;
+
+                      case 14:
+                        reject(new Error("Request did not complete successfully."));
+
+                      case 15:
+                        _context2.next = 21;
+                        break;
+
+                      case 17:
+                        _context2.prev = 17;
+                        _context2.t0 = _context2["catch"](0);
+                        console.log('ERROR: ', _context2.t0);
+                        reject(_context2.t0);
+
+                      case 21:
+                      case "end":
+                        return _context2.stop();
+                    }
+                  }
+                }, _callee2, this, [[0, 17]]);
+              }));
+
+              return function (_x3, _x4) {
+                return _ref.apply(this, arguments);
+              };
+            }()));
+
+          case 1:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3, this);
+  }));
+  return _makeApiRequest.apply(this, arguments);
+}
+
+var NodeApi =
+/*#__PURE__*/
+function () {
+  function NodeApi() {
+    _classCallCheck(this, NodeApi);
+  }
+
+  _createClass(NodeApi, [{
+    key: "getInfo",
+    value: function () {
+      var _getInfo = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee() {
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                return _context.abrupt("return", makeApiRequest('getInfo'));
+
+              case 1:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function getInfo() {
+        return _getInfo.apply(this, arguments);
+      }
+
+      return getInfo;
+    }()
+  }]);
+
+  return NodeApi;
+}();
+
+
+
+/***/ }),
+
 /***/ "./src/shared/stores/AdcInfoStore.js":
 /*!*******************************************!*\
   !*** ./src/shared/stores/AdcInfoStore.js ***!
@@ -93502,6 +94280,8 @@ function (_Component) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return AdcInfoStore; });
 /* harmony import */ var mobx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! mobx */ "./node_modules/mobx/lib/mobx.module.js");
+/* harmony import */ var mobx_task__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! mobx-task */ "./node_modules/mobx-task/lib/index.js");
+/* harmony import */ var mobx_task__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(mobx_task__WEBPACK_IMPORTED_MODULE_1__);
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -93514,11 +94294,15 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 
 
+
 var AdcInfoStore =
 /*#__PURE__*/
 function () {
-  function AdcInfoStore() {
+  function AdcInfoStore(nodeApi) {
     _classCallCheck(this, AdcInfoStore);
+
+    this.isNodeActive = false;
+    this.nodeApi = nodeApi;
   }
 
   _createClass(AdcInfoStore, [{
@@ -93527,10 +94311,18 @@ function () {
       var _init = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee() {
+        var info;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
+                _context.next = 2;
+                return this.nodeApi.getInfo();
+
+              case 2:
+                info = _context.sent;
+
+              case 3:
               case "end":
                 return _context.stop();
             }
@@ -93550,7 +94342,9 @@ function () {
 }();
 
 
-Object(mobx__WEBPACK_IMPORTED_MODULE_0__["decorate"])(AdcInfoStore, {});
+Object(mobx__WEBPACK_IMPORTED_MODULE_0__["decorate"])(AdcInfoStore, {
+  init: mobx_task__WEBPACK_IMPORTED_MODULE_1__["task"]
+});
 
 /***/ }),
 

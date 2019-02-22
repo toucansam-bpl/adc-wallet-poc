@@ -86,6 +86,17 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "./credentials.json":
+/*!**************************!*\
+  !*** ./credentials.json ***!
+  \**************************/
+/*! exports provided: user, password, default */
+/***/ (function(module) {
+
+module.exports = {"user":"audiocoinrpc","password":"2Qc575iBkLE9BntJoRT15ThVSzs8HdvuauKDMbSZUkCP"};
+
+/***/ }),
+
 /***/ "./public/img/bpl-logo.png":
 /*!*********************************!*\
   !*** ./public/img/bpl-logo.png ***!
@@ -94,6 +105,80 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "static/media/bpl-logo.8b1be392.png";
+
+/***/ }),
+
+/***/ "./src/server/adcApi.js":
+/*!******************************!*\
+  !*** ./src/server/adcApi.js ***!
+  \******************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var express__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! express */ "express");
+/* harmony import */ var express__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(express__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var node_adc__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! node-adc */ "node-adc");
+/* harmony import */ var node_adc__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(node_adc__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _credentials_json__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../credentials.json */ "./credentials.json");
+var _credentials_json__WEBPACK_IMPORTED_MODULE_2___namespace = /*#__PURE__*/__webpack_require__.t(/*! ../../credentials.json */ "./credentials.json", 1);
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+
+
+
+var app = express__WEBPACK_IMPORTED_MODULE_0___default()();
+var adc = new node_adc__WEBPACK_IMPORTED_MODULE_1___default.a(_credentials_json__WEBPACK_IMPORTED_MODULE_2__.user, _credentials_json__WEBPACK_IMPORTED_MODULE_2__.password);
+
+var apiResponder = function apiResponder(fn) {
+  return (
+    /*#__PURE__*/
+    function () {
+      var _ref = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee(req, res, next) {
+        var response;
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.prev = 0;
+                _context.next = 3;
+                return fn(req);
+
+              case 3:
+                response = _context.sent;
+                res.json(response);
+                _context.next = 10;
+                break;
+
+              case 7:
+                _context.prev = 7;
+                _context.t0 = _context["catch"](0);
+                next(_context.t0);
+
+              case 10:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this, [[0, 7]]);
+      }));
+
+      return function (_x, _x2, _x3) {
+        return _ref.apply(this, arguments);
+      };
+    }()
+  );
+};
+
+app.get('/getInfo', apiResponder(function () {
+  return adc.getInfo();
+}));
+/* harmony default export */ __webpack_exports__["default"] = (app);
 
 /***/ }),
 
@@ -130,9 +215,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _material_ui_core_colors_red__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_colors_red__WEBPACK_IMPORTED_MODULE_10__);
 /* harmony import */ var _shared_App__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../shared/App */ "./src/shared/App.js");
 /* harmony import */ var _shared_stores_AdcInfoStore__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../shared/stores/AdcInfoStore */ "./src/shared/stores/AdcInfoStore.js");
+/* harmony import */ var _shared_domain_NodeApi__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../shared/domain/NodeApi */ "./src/shared/domain/NodeApi.js");
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 
 
 
@@ -195,7 +282,8 @@ function () {
     }
   });
   var generateClassName = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_8__["createGenerateClassName"])();
-  var adcInfoStore = new _shared_stores_AdcInfoStore__WEBPACK_IMPORTED_MODULE_12__["default"]();
+  var nodeApi = new _shared_domain_NodeApi__WEBPACK_IMPORTED_MODULE_13__["default"]();
+  var adcInfoStore = new _shared_stores_AdcInfoStore__WEBPACK_IMPORTED_MODULE_12__["default"](nodeApi);
   var stores = {
     adcInfoStore: adcInfoStore // Render the component to a string.
 
@@ -270,13 +358,16 @@ function () {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var express__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! express */ "express");
 /* harmony import */ var express__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(express__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _middleware_renderer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./middleware/renderer */ "./src/server/middleware/renderer.js");
+/* harmony import */ var _adcApi__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./adcApi */ "./src/server/adcApi.js");
+/* harmony import */ var _middleware_renderer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./middleware/renderer */ "./src/server/middleware/renderer.js");
+
 
 
 var app = express__WEBPACK_IMPORTED_MODULE_0___default()();
-app.get('^/$', _middleware_renderer__WEBPACK_IMPORTED_MODULE_1__["default"]);
+app.get('^/$', _middleware_renderer__WEBPACK_IMPORTED_MODULE_2__["default"]);
+app.use('/adc', _adcApi__WEBPACK_IMPORTED_MODULE_1__["default"]);
 app.use(express__WEBPACK_IMPORTED_MODULE_0___default.a.static('public'));
-app.get('*', _middleware_renderer__WEBPACK_IMPORTED_MODULE_1__["default"]);
+app.get('*', _middleware_renderer__WEBPACK_IMPORTED_MODULE_2__["default"]);
 app.listen(3000, function () {
   console.log("Server is listening on port: 3000");
 });
@@ -453,9 +544,20 @@ function (_Component) {
   _createClass(HomeScreen, [{
     key: "render",
     value: function render() {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Grid"], {
-        container: true
-      }, "Home Screen");
+      var adcInfoStore = this.props.adcInfoStore;
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, adcInfoStore.init.match({
+        pending: function pending() {
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Loading, please wait..");
+        },
+        rejected: function rejected(err) {
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Error: ", err.message);
+        },
+        resolved: function resolved() {
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Grid"], {
+            container: true
+          }, "Home Screen");
+        }
+      }));
     }
   }]);
 
@@ -530,6 +632,161 @@ function (_Component) {
 
 /***/ }),
 
+/***/ "./src/shared/domain/NodeApi.js":
+/*!**************************************!*\
+  !*** ./src/shared/domain/NodeApi.js ***!
+  \**************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return NodeApi; });
+/* harmony import */ var node_fetch__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! node-fetch */ "node-fetch");
+/* harmony import */ var node_fetch__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(node_fetch__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var querystring__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! querystring */ "querystring");
+/* harmony import */ var querystring__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(querystring__WEBPACK_IMPORTED_MODULE_1__);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+
+
+var api = '/adc';
+
+function makeApiRequest(_x, _x2) {
+  return _makeApiRequest.apply(this, arguments);
+}
+
+function _makeApiRequest() {
+  _makeApiRequest = _asyncToGenerator(
+  /*#__PURE__*/
+  regeneratorRuntime.mark(function _callee3(url, params) {
+    return regeneratorRuntime.wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            return _context3.abrupt("return", new Promise(
+            /*#__PURE__*/
+            function () {
+              var _ref = _asyncToGenerator(
+              /*#__PURE__*/
+              regeneratorRuntime.mark(function _callee2(resolve, reject) {
+                var query, requestUrl, rawResponse, response;
+                return regeneratorRuntime.wrap(function _callee2$(_context2) {
+                  while (1) {
+                    switch (_context2.prev = _context2.next) {
+                      case 0:
+                        _context2.prev = 0;
+                        query = params ? "?".concat(querystring__WEBPACK_IMPORTED_MODULE_1___default.a.stringify(params)) : '';
+                        requestUrl = "".concat(api, "/").concat(url).concat(query);
+                        _context2.next = 5;
+                        return node_fetch__WEBPACK_IMPORTED_MODULE_0___default()(requestUrl, {
+                          method: 'GET'
+                        });
+
+                      case 5:
+                        rawResponse = _context2.sent;
+                        console.log(rawResponse.ok, rawResponse.status);
+
+                        if (!rawResponse.ok) {
+                          _context2.next = 14;
+                          break;
+                        }
+
+                        _context2.next = 10;
+                        return rawResponse.json();
+
+                      case 10:
+                        response = _context2.sent;
+                        resolve(response);
+                        _context2.next = 15;
+                        break;
+
+                      case 14:
+                        reject(new Error("Request did not complete successfully."));
+
+                      case 15:
+                        _context2.next = 21;
+                        break;
+
+                      case 17:
+                        _context2.prev = 17;
+                        _context2.t0 = _context2["catch"](0);
+                        console.log('ERROR: ', _context2.t0);
+                        reject(_context2.t0);
+
+                      case 21:
+                      case "end":
+                        return _context2.stop();
+                    }
+                  }
+                }, _callee2, this, [[0, 17]]);
+              }));
+
+              return function (_x3, _x4) {
+                return _ref.apply(this, arguments);
+              };
+            }()));
+
+          case 1:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3, this);
+  }));
+  return _makeApiRequest.apply(this, arguments);
+}
+
+var NodeApi =
+/*#__PURE__*/
+function () {
+  function NodeApi() {
+    _classCallCheck(this, NodeApi);
+  }
+
+  _createClass(NodeApi, [{
+    key: "getInfo",
+    value: function () {
+      var _getInfo = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee() {
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                return _context.abrupt("return", makeApiRequest('getInfo'));
+
+              case 1:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function getInfo() {
+        return _getInfo.apply(this, arguments);
+      }
+
+      return getInfo;
+    }()
+  }]);
+
+  return NodeApi;
+}();
+
+
+
+/***/ }),
+
 /***/ "./src/shared/stores/AdcInfoStore.js":
 /*!*******************************************!*\
   !*** ./src/shared/stores/AdcInfoStore.js ***!
@@ -542,6 +799,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return AdcInfoStore; });
 /* harmony import */ var mobx__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! mobx */ "mobx");
 /* harmony import */ var mobx__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(mobx__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var mobx_task__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! mobx-task */ "mobx-task");
+/* harmony import */ var mobx_task__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(mobx_task__WEBPACK_IMPORTED_MODULE_1__);
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -554,11 +813,15 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 
 
+
 var AdcInfoStore =
 /*#__PURE__*/
 function () {
-  function AdcInfoStore() {
+  function AdcInfoStore(nodeApi) {
     _classCallCheck(this, AdcInfoStore);
+
+    this.isNodeActive = false;
+    this.nodeApi = nodeApi;
   }
 
   _createClass(AdcInfoStore, [{
@@ -567,10 +830,18 @@ function () {
       var _init = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee() {
+        var info;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
+                _context.next = 2;
+                return this.nodeApi.getInfo();
+
+              case 2:
+                info = _context.sent;
+
+              case 3:
               case "end":
                 return _context.stop();
             }
@@ -590,7 +861,9 @@ function () {
 }();
 
 
-Object(mobx__WEBPACK_IMPORTED_MODULE_0__["decorate"])(AdcInfoStore, {});
+Object(mobx__WEBPACK_IMPORTED_MODULE_0__["decorate"])(AdcInfoStore, {
+  init: mobx_task__WEBPACK_IMPORTED_MODULE_1__["task"]
+});
 
 /***/ }),
 
@@ -706,6 +979,39 @@ module.exports = require("mobx-react");
 
 /***/ }),
 
+/***/ "mobx-task":
+/*!****************************!*\
+  !*** external "mobx-task" ***!
+  \****************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("mobx-task");
+
+/***/ }),
+
+/***/ "node-adc":
+/*!***************************!*\
+  !*** external "node-adc" ***!
+  \***************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("node-adc");
+
+/***/ }),
+
+/***/ "node-fetch":
+/*!*****************************!*\
+  !*** external "node-fetch" ***!
+  \*****************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("node-fetch");
+
+/***/ }),
+
 /***/ "path":
 /*!***********************!*\
   !*** external "path" ***!
@@ -714,6 +1020,17 @@ module.exports = require("mobx-react");
 /***/ (function(module, exports) {
 
 module.exports = require("path");
+
+/***/ }),
+
+/***/ "querystring":
+/*!******************************!*\
+  !*** external "querystring" ***!
+  \******************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("querystring");
 
 /***/ }),
 

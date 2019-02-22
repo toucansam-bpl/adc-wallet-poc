@@ -3,15 +3,21 @@ import { action,
          decorate,
          observable,
        } from 'mobx'
+import { task } from 'mobx-task'
 
 
 export default class AdcInfoStore {
-  constructor() {
+  isNodeActive = false
+
+  constructor(nodeApi) {
+    this.nodeApi = nodeApi
   }
 
   async init() {
+    const info = await this.nodeApi.getInfo()
   }
 }
 
 decorate(AdcInfoStore, {
+  init: task,
 })

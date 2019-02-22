@@ -1,11 +1,13 @@
 import express from 'express'
 
+import adc from './adcApi'
 import renderer from './middleware/renderer'
 
 
 const app = express()
 
 app.get('^/$', renderer)
+app.use('/adc', adc)
 
 app.use(express.static('public'))
 

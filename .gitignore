@@ -60,3 +60,4 @@ typings/
 build
 static
 .DS_Store
+credentials.json

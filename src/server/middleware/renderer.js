@@ -12,6 +12,7 @@ import red from '@material-ui/core/colors/red'
 
 import App from '../../shared/App'
 import AdcInfoStore from '../../shared/stores/AdcInfoStore'
+import NodeApi from '../../shared/domain/NodeApi'
 
 
 const renderFullPage = async (html, css) => 
@@ -51,11 +52,13 @@ export default (req, res) => {
 
   const generateClassName = createGenerateClassName()
 
-  const adcInfoStore = new AdcInfoStore()
+  const nodeApi = new NodeApi()
+  const adcInfoStore = new AdcInfoStore(nodeApi)
 
   const stores = {
     adcInfoStore,
   }
+
 
   // Render the component to a string.
   const html = renderToString(
