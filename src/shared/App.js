@@ -16,9 +16,8 @@ import WalletScreen from './WalletScreen/WalletScreen'
 
 const styles = theme => ({
   content: {
-    marginTop: "70px",
-    padding: "30px 15px",
-    minHeight: "calc(100% - 123px)"
+    height: '100%',
+    paddingTop: '70px',
   },
   flex: {
     flex: 1,
@@ -30,8 +29,8 @@ const styles = theme => ({
   headerLink: {
     color: '#fff',
     textDecoration: 'none',
-  }
-});
+  },
+})
 
 
 class App extends Component {

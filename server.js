@@ -409,9 +409,8 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 var styles = function styles(theme) {
   return {
     content: {
-      marginTop: "70px",
-      padding: "30px 15px",
-      minHeight: "calc(100% - 123px)"
+      height: '100%',
+      paddingTop: '70px'
     },
     flex: {
       flex: 1
@@ -523,6 +522,32 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
+var styles = function styles(theme) {
+  return {
+    container: {
+      height: '100%'
+    }
+  };
+};
+
+var WalletLoading = function WalletLoading() {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Grid"], {
+    item: true
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Typography"], {
+    color: "secondary",
+    variant: "headline"
+  }, "Connecting to AudioCoin..."));
+};
+
+var WalletUnavailable = function WalletUnavailable() {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Grid"], {
+    item: true
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Typography"], {
+    color: "secondary",
+    variant: "headline"
+  }, "AudioCoin wallet is unavailable. Please try again later."));
+};
+
 var HomeScreen =
 /*#__PURE__*/
 function (_Component) {
@@ -537,17 +562,20 @@ function (_Component) {
   _createClass(HomeScreen, [{
     key: "render",
     value: function render() {
-      var adcInfoStore = this.props.adcInfoStore;
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, adcInfoStore.init.match({
-        pending: function pending() {
-          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Loading, please wait..");
-        },
-        rejected: function rejected(err) {
-          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Error: ", err.message);
-        },
+      var _this$props = this.props,
+          adcInfoStore = _this$props.adcInfoStore,
+          classes = _this$props.classes;
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Grid"], {
+        container: true,
+        alignItems: "center",
+        className: classes.container,
+        justify: "center"
+      }, adcInfoStore.init.match({
+        pending: WalletLoading,
+        rejected: WalletUnavailable,
         resolved: function resolved() {
           return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Grid"], {
-            container: true
+            item: true
           }, "Home Screen");
         }
       }));
@@ -557,7 +585,7 @@ function (_Component) {
   return HomeScreen;
 }(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
 
-/* harmony default export */ __webpack_exports__["default"] = (Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["inject"])('adcInfoStore')(Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["observer"])(HomeScreen)));
+/* harmony default export */ __webpack_exports__["default"] = (Object(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["withStyles"])(styles)(Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["inject"])('adcInfoStore')(Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["observer"])(HomeScreen))));
 
 /***/ }),
 
