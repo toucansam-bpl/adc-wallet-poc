@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core'
 import { Link, Route, Switch } from 'react-router-dom'
 
-import logo from '../../public/img/bpl-logo.png'
+import logo from '../../public/img/adc-logo.png'
 import HomeScreen from './HomeScreen/HomeScreen'
 import WalletScreen from './WalletScreen/WalletScreen'
 
@@ -27,6 +27,10 @@ const styles = theme => ({
     marginLeft: -12,
     marginRight: 20,
   },
+  headerLink: {
+    color: '#fff',
+    textDecoration: 'none',
+  }
 });
 
 
@@ -50,7 +54,7 @@ class App extends Component {
                 style={{ height: '1.16667em', verticalAlign: 'bottom' }}
               />
               <span style={{ marginLeft: '15px' }}>
-                <Link to="/">BPL Delegate Explorer</Link>
+                <Link to="/" className={classes.headerLink}>AudioCoin Online Wallet</Link>
               </span>
             </Typography>
 

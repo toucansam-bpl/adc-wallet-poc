@@ -97,14 +97,14 @@ module.exports = {"user":"audiocoinrpc","password":"2Qc575iBkLE9BntJoRT15ThVSzs8
 
 /***/ }),
 
-/***/ "./public/img/bpl-logo.png":
+/***/ "./public/img/adc-logo.png":
 /*!*********************************!*\
-  !*** ./public/img/bpl-logo.png ***!
+  !*** ./public/img/adc-logo.png ***!
   \*********************************/
 /*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-module.exports = __webpack_require__.p + "static/media/bpl-logo.8b1be392.png";
+module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAAQlBMVEVHcEw9sOU9sOU9sOU9sOU9sOU9sOU9sOU9sOU9sOU9sOX++flbvOltwuqj1/DB4vN/ye2R0O5JtebO6PXy9Pjm8PcEFIWxAAAACnRSTlMA7yBwWtoQtjyE5Y1DvQAAAfNJREFUSMfFVttyhSAMrFcugRBB//9XSz2KBPB4OtOZ5skRlmySTeDr6/9slrvNH26Xg+j0YZMY+sfjx0kXJsa3iKHTDZvuQXLSNyZu6A363rqmI6Hf2lAjJv1g4sGHMZ58gVEcodj+YGBDWNZgbP6fxSOzBXRxN6JB79CBzUBdlrf5CsSSg+tsixHeDCejtYI3nCQFU1Pr0y9ytJSZWjI/U+0kkqqza3EzpZtTWDFe06qIW30RzZh4gzs+LMfQRudnz3h5PKpnAAID0RXOyKRiAc+PaC7naBLjndmc/i8mgwDgpRg8T3vlLFUeNs0gsCY6npJPFr3DAgKw2VThc5fMoo91riApJHQtCAE2ILC+JNCE6DN6DgmFLGTW8vZY5ZAjbZZyLzLJpY4liThlUzMd48rrcuUrrp3HdUyVia8tqpILU/BJQc5fEPRNLSs+8gK8mPiVKyyryh59FoyhY6cp2mZdy7YUV89io8MopIqlWTZe6sNQ9aXJm7+vh6sDKjoytqptDMzkRnvDp50JS1JrLMrcnMj0MywX0iYmAQOy6PIJO+e3lw30M5IRtnxwVrNfFuOO4ox0i2a5mIoLeny6XirEM2ZqPAJk9/YOaz4b+je3pfrdtX9/h+/JVg2QkE8vEk5vUv1HDx+lxG5qkH/z8voGSTpIVXAI66wAAAAASUVORK5CYII="
 
 /***/ }),
 
@@ -209,17 +209,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(react_router_dom__WEBPACK_IMPORTED_MODULE_7__);
 /* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @material-ui/core/styles */ "@material-ui/core/styles");
 /* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_8__);
-/* harmony import */ var _material_ui_core_colors_green__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @material-ui/core/colors/green */ "@material-ui/core/colors/green");
-/* harmony import */ var _material_ui_core_colors_green__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_colors_green__WEBPACK_IMPORTED_MODULE_9__);
-/* harmony import */ var _material_ui_core_colors_red__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @material-ui/core/colors/red */ "@material-ui/core/colors/red");
-/* harmony import */ var _material_ui_core_colors_red__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_colors_red__WEBPACK_IMPORTED_MODULE_10__);
-/* harmony import */ var _shared_App__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../shared/App */ "./src/shared/App.js");
-/* harmony import */ var _shared_stores_AdcInfoStore__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../shared/stores/AdcInfoStore */ "./src/shared/stores/AdcInfoStore.js");
-/* harmony import */ var _shared_domain_NodeApi__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../shared/domain/NodeApi */ "./src/shared/domain/NodeApi.js");
+/* harmony import */ var _shared_App__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../shared/App */ "./src/shared/App.js");
+/* harmony import */ var _shared_stores_AdcInfoStore__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../shared/stores/AdcInfoStore */ "./src/shared/stores/AdcInfoStore.js");
+/* harmony import */ var _shared_ui_createTheme__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../shared/ui/createTheme */ "./src/shared/ui/createTheme.js");
+/* harmony import */ var _shared_domain_NodeApi__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../shared/domain/NodeApi */ "./src/shared/domain/NodeApi.js");
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
 
 
 
@@ -272,18 +268,10 @@ function () {
 /* harmony default export */ __webpack_exports__["default"] = (function (req, res) {
   // Create a sheetsRegistry instance.
   var sheetsRegistry = new react_jss_lib_jss__WEBPACK_IMPORTED_MODULE_5__["SheetsRegistry"]();
-  console.log("Serving ".concat(req.url)); // Create a theme instance.
-
-  var theme = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_8__["createMuiTheme"])({
-    palette: {
-      primary: _material_ui_core_colors_green__WEBPACK_IMPORTED_MODULE_9___default.a,
-      accent: _material_ui_core_colors_red__WEBPACK_IMPORTED_MODULE_10___default.a,
-      type: 'light'
-    }
-  });
+  console.log("Serving ".concat(req.url));
   var generateClassName = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_8__["createGenerateClassName"])();
-  var nodeApi = new _shared_domain_NodeApi__WEBPACK_IMPORTED_MODULE_13__["default"]();
-  var adcInfoStore = new _shared_stores_AdcInfoStore__WEBPACK_IMPORTED_MODULE_12__["default"](nodeApi);
+  var nodeApi = new _shared_domain_NodeApi__WEBPACK_IMPORTED_MODULE_12__["default"]();
+  var adcInfoStore = new _shared_stores_AdcInfoStore__WEBPACK_IMPORTED_MODULE_10__["default"](nodeApi);
   var stores = {
     adcInfoStore: adcInfoStore // Render the component to a string.
 
@@ -292,12 +280,12 @@ function () {
     registry: sheetsRegistry,
     generateClassName: generateClassName
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_8__["MuiThemeProvider"], {
-    theme: theme,
+    theme: Object(_shared_ui_createTheme__WEBPACK_IMPORTED_MODULE_11__["default"])(),
     sheetsManager: new Map()
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(mobx_react__WEBPACK_IMPORTED_MODULE_3__["Provider"], stores, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_7__["StaticRouter"], {
     location: req.url,
     context: {}
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shared_App__WEBPACK_IMPORTED_MODULE_11__["default"], null)))))); // Grab the CSS from our sheetsRegistry.
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shared_App__WEBPACK_IMPORTED_MODULE_9__["default"], null)))))); // Grab the CSS from our sheetsRegistry.
 
   var css = sheetsRegistry.toString();
 
@@ -389,8 +377,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _material_ui_core__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "react-router-dom");
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_router_dom__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _public_img_bpl_logo_png__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../public/img/bpl-logo.png */ "./public/img/bpl-logo.png");
-/* harmony import */ var _public_img_bpl_logo_png__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_public_img_bpl_logo_png__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _public_img_adc_logo_png__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../public/img/adc-logo.png */ "./public/img/adc-logo.png");
+/* harmony import */ var _public_img_adc_logo_png__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_public_img_adc_logo_png__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _HomeScreen_HomeScreen__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./HomeScreen/HomeScreen */ "./src/shared/HomeScreen/HomeScreen.js");
 /* harmony import */ var _WalletScreen_WalletScreen__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./WalletScreen/WalletScreen */ "./src/shared/WalletScreen/WalletScreen.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -431,6 +419,10 @@ var styles = function styles(theme) {
     menuButton: {
       marginLeft: -12,
       marginRight: 20
+    },
+    headerLink: {
+      color: '#fff',
+      textDecoration: 'none'
     }
   };
 };
@@ -457,7 +449,7 @@ function (_Component) {
         color: "inherit",
         className: classes.flex
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
-        src: _public_img_bpl_logo_png__WEBPACK_IMPORTED_MODULE_3___default.a,
+        src: _public_img_adc_logo_png__WEBPACK_IMPORTED_MODULE_3___default.a,
         alt: "ADC logo",
         style: {
           height: '1.16667em',
@@ -468,8 +460,9 @@ function (_Component) {
           marginLeft: '15px'
         }
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"], {
-        to: "/"
-      }, "BPL Delegate Explorer"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_1__["Hidden"], {
+        to: "/",
+        className: classes.headerLink
+      }, "AudioCoin Online Wallet"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_1__["Hidden"], {
         smDown: true
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_1__["Typography"], {
         color: "inherit"
@@ -867,6 +860,40 @@ Object(mobx__WEBPACK_IMPORTED_MODULE_0__["decorate"])(AdcInfoStore, {
 
 /***/ }),
 
+/***/ "./src/shared/ui/createTheme.js":
+/*!**************************************!*\
+  !*** ./src/shared/ui/createTheme.js ***!
+  \**************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @material-ui/core/styles */ "@material-ui/core/styles");
+/* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _material_ui_core_colors_grey__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material-ui/core/colors/grey */ "@material-ui/core/colors/grey");
+/* harmony import */ var _material_ui_core_colors_grey__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_colors_grey__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _material_ui_core_colors_lightBlue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material-ui/core/colors/lightBlue */ "@material-ui/core/colors/lightBlue");
+/* harmony import */ var _material_ui_core_colors_lightBlue__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_colors_lightBlue__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _material_ui_core_colors_red__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @material-ui/core/colors/red */ "@material-ui/core/colors/red");
+/* harmony import */ var _material_ui_core_colors_red__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_colors_red__WEBPACK_IMPORTED_MODULE_3__);
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = (function () {
+  return Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_0__["createMuiTheme"])({
+    palette: {
+      primary: _material_ui_core_colors_grey__WEBPACK_IMPORTED_MODULE_1___default.a['A900'],
+      secondary: _material_ui_core_colors_lightBlue__WEBPACK_IMPORTED_MODULE_2___default.a,
+      accent: _material_ui_core_colors_red__WEBPACK_IMPORTED_MODULE_3___default.a,
+      type: 'light'
+    }
+  });
+});
+
+/***/ }),
+
 /***/ 0:
 /*!****************************************************!*\
   !*** multi @babel/polyfill ./src/server/server.js ***!
@@ -902,14 +929,25 @@ module.exports = require("@material-ui/core");
 
 /***/ }),
 
-/***/ "@material-ui/core/colors/green":
-/*!*************************************************!*\
-  !*** external "@material-ui/core/colors/green" ***!
-  \*************************************************/
+/***/ "@material-ui/core/colors/grey":
+/*!************************************************!*\
+  !*** external "@material-ui/core/colors/grey" ***!
+  \************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = require("@material-ui/core/colors/green");
+module.exports = require("@material-ui/core/colors/grey");
+
+/***/ }),
+
+/***/ "@material-ui/core/colors/lightBlue":
+/*!*****************************************************!*\
+  !*** external "@material-ui/core/colors/lightBlue" ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/colors/lightBlue");
 
 /***/ }),
 

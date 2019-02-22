@@ -2,12 +2,11 @@ import React from 'react'
 import { Provider as MobxProvider } from 'mobx-react'
 import { hydrate } from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
-import green from '@material-ui/core/colors/green'
-import red from '@material-ui/core/colors/red'
+import { MuiThemeProvider } from '@material-ui/core/styles'
 
 import App from '../shared/App'
 import AdcInfoStore from '../shared/stores/AdcInfoStore'
+import createTheme from '../shared/ui/createTheme'
 import NodeApi from '../shared/domain/NodeApi'
 
 
@@ -25,15 +24,6 @@ class Main extends React.Component {
   }
 }
 
-// Create a theme instance.
-const theme = createMuiTheme({
-  palette: {
-    primary: green,
-    accent: red,
-    type: 'light',
-  },
-})
-
 
 const nodeApi = new NodeApi()
 const adcInfoStore = new AdcInfoStore(nodeApi)
@@ -46,7 +36,7 @@ adcInfoStore.init()
 
 
 hydrate(
-  <MuiThemeProvider theme={theme}>
+  <MuiThemeProvider theme={createTheme()}>
     <MobxProvider {... stores}>
       <BrowserRouter>
         <Main />

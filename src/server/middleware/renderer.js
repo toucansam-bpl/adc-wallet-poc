@@ -6,12 +6,11 @@ import { renderToString } from 'react-dom/server'
 import { SheetsRegistry } from 'react-jss/lib/jss'
 import JssProvider from 'react-jss/lib/JssProvider'
 import { StaticRouter } from 'react-router-dom'
-import { MuiThemeProvider, createMuiTheme, createGenerateClassName, } from '@material-ui/core/styles'
-import green from '@material-ui/core/colors/green'
-import red from '@material-ui/core/colors/red'
+import { MuiThemeProvider, createGenerateClassName, } from '@material-ui/core/styles'
 
 import App from '../../shared/App'
 import AdcInfoStore from '../../shared/stores/AdcInfoStore'
+import createTheme from '../../shared/ui/createTheme'
 import NodeApi from '../../shared/domain/NodeApi'
 
 
@@ -41,15 +40,6 @@ export default (req, res) => {
 
   console.log(`Serving ${req.url}`)
 
-  // Create a theme instance.
-  const theme = createMuiTheme({
-    palette: {
-      primary: green,
-      accent: red,
-      type: 'light',
-    },
-  })
-
   const generateClassName = createGenerateClassName()
 
   const nodeApi = new NodeApi()
@@ -63,7 +53,7 @@ export default (req, res) => {
   // Render the component to a string.
   const html = renderToString(
     <JssProvider registry={sheetsRegistry} generateClassName={generateClassName}>
-      <MuiThemeProvider theme={theme} sheetsManager={new Map()}>
+      <MuiThemeProvider theme={createTheme()} sheetsManager={new Map()}>
         <MobxProvider {... stores}>
           <StaticRouter location={req.url} context={{}}>
             <App />
