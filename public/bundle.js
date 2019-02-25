@@ -83984,6 +83984,28 @@ function polyfill(Component) {
 
 /***/ }),
 
+/***/ "./node_modules/react-router-dom/Redirect.js":
+/*!***************************************************!*\
+  !*** ./node_modules/react-router-dom/Redirect.js ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+
+var _Redirect = __webpack_require__(/*! react-router/Redirect */ "./node_modules/react-router/Redirect.js");
+
+var _Redirect2 = _interopRequireDefault(_Redirect);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = _Redirect2.default; // Written in this round about way for babel-transform-imports
+
+/***/ }),
+
 /***/ "./node_modules/react-router-dom/es/BrowserRouter.js":
 /*!***********************************************************!*\
   !*** ./node_modules/react-router-dom/es/BrowserRouter.js ***!
@@ -85693,6 +85715,148 @@ module.exports = warning;
 
 /***/ }),
 
+/***/ "./node_modules/react-router/Redirect.js":
+/*!***********************************************!*\
+  !*** ./node_modules/react-router/Redirect.js ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/react-router/node_modules/prop-types/index.js");
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _warning = __webpack_require__(/*! warning */ "./node_modules/react-router/node_modules/warning/warning.js");
+
+var _warning2 = _interopRequireDefault(_warning);
+
+var _invariant = __webpack_require__(/*! invariant */ "./node_modules/invariant/browser.js");
+
+var _invariant2 = _interopRequireDefault(_invariant);
+
+var _history = __webpack_require__(/*! history */ "./node_modules/history/es/index.js");
+
+var _generatePath = __webpack_require__(/*! ./generatePath */ "./node_modules/react-router/generatePath.js");
+
+var _generatePath2 = _interopRequireDefault(_generatePath);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * The public API for updating the location programmatically
+ * with a component.
+ */
+var Redirect = function (_React$Component) {
+  _inherits(Redirect, _React$Component);
+
+  function Redirect() {
+    _classCallCheck(this, Redirect);
+
+    return _possibleConstructorReturn(this, _React$Component.apply(this, arguments));
+  }
+
+  Redirect.prototype.isStatic = function isStatic() {
+    return this.context.router && this.context.router.staticContext;
+  };
+
+  Redirect.prototype.componentWillMount = function componentWillMount() {
+    (0, _invariant2.default)(this.context.router, "You should not use <Redirect> outside a <Router>");
+
+    if (this.isStatic()) this.perform();
+  };
+
+  Redirect.prototype.componentDidMount = function componentDidMount() {
+    if (!this.isStatic()) this.perform();
+  };
+
+  Redirect.prototype.componentDidUpdate = function componentDidUpdate(prevProps) {
+    var prevTo = (0, _history.createLocation)(prevProps.to);
+    var nextTo = (0, _history.createLocation)(this.props.to);
+
+    if ((0, _history.locationsAreEqual)(prevTo, nextTo)) {
+      (0, _warning2.default)(false, "You tried to redirect to the same route you're currently on: " + ("\"" + nextTo.pathname + nextTo.search + "\""));
+      return;
+    }
+
+    this.perform();
+  };
+
+  Redirect.prototype.computeTo = function computeTo(_ref) {
+    var computedMatch = _ref.computedMatch,
+        to = _ref.to;
+
+    if (computedMatch) {
+      if (typeof to === "string") {
+        return (0, _generatePath2.default)(to, computedMatch.params);
+      } else {
+        return _extends({}, to, {
+          pathname: (0, _generatePath2.default)(to.pathname, computedMatch.params)
+        });
+      }
+    }
+
+    return to;
+  };
+
+  Redirect.prototype.perform = function perform() {
+    var history = this.context.router.history;
+    var push = this.props.push;
+
+    var to = this.computeTo(this.props);
+
+    if (push) {
+      history.push(to);
+    } else {
+      history.replace(to);
+    }
+  };
+
+  Redirect.prototype.render = function render() {
+    return null;
+  };
+
+  return Redirect;
+}(_react2.default.Component);
+
+Redirect.propTypes = {
+  computedMatch: _propTypes2.default.object, // private, from <Switch>
+  push: _propTypes2.default.bool,
+  from: _propTypes2.default.string,
+  to: _propTypes2.default.oneOfType([_propTypes2.default.string, _propTypes2.default.object]).isRequired
+};
+Redirect.defaultProps = {
+  push: false
+};
+Redirect.contextTypes = {
+  router: _propTypes2.default.shape({
+    history: _propTypes2.default.shape({
+      push: _propTypes2.default.func.isRequired,
+      replace: _propTypes2.default.func.isRequired
+    }).isRequired,
+    staticContext: _propTypes2.default.object
+  }).isRequired
+};
+exports.default = Redirect;
+
+/***/ }),
+
 /***/ "./node_modules/react-router/es/MemoryRouter.js":
 /*!******************************************************!*\
   !*** ./node_modules/react-router/es/MemoryRouter.js ***!
@@ -86741,6 +86905,62 @@ var withRouter = function withRouter(Component) {
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (withRouter);
+
+/***/ }),
+
+/***/ "./node_modules/react-router/generatePath.js":
+/*!***************************************************!*\
+  !*** ./node_modules/react-router/generatePath.js ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+
+var _pathToRegexp = __webpack_require__(/*! path-to-regexp */ "./node_modules/react-router/node_modules/path-to-regexp/index.js");
+
+var _pathToRegexp2 = _interopRequireDefault(_pathToRegexp);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var patternCache = {};
+var cacheLimit = 10000;
+var cacheCount = 0;
+
+var compileGenerator = function compileGenerator(pattern) {
+  var cacheKey = pattern;
+  var cache = patternCache[cacheKey] || (patternCache[cacheKey] = {});
+
+  if (cache[pattern]) return cache[pattern];
+
+  var compiledGenerator = _pathToRegexp2.default.compile(pattern);
+
+  if (cacheCount < cacheLimit) {
+    cache[pattern] = compiledGenerator;
+    cacheCount++;
+  }
+
+  return compiledGenerator;
+};
+
+/**
+ * Public API for generating a URL pathname from a pattern and parameters.
+ */
+var generatePath = function generatePath() {
+  var pattern = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "/";
+  var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+  if (pattern === "/") {
+    return pattern;
+  }
+  var generator = compileGenerator(pattern);
+  return generator(params, { pretty: true });
+};
+
+exports.default = generatePath;
 
 /***/ }),
 
@@ -94019,6 +94239,72 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var mobx_react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-react/index.module.js");
+/* harmony import */ var react_router_dom_Redirect__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom/Redirect */ "./node_modules/react-router-dom/Redirect.js");
+/* harmony import */ var react_router_dom_Redirect__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_router_dom_Redirect__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _WalletStatus__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./WalletStatus */ "./src/shared/HomeScreen/WalletStatus.js");
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
+
+
+
+
+var HomeScreen =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(HomeScreen, _Component);
+
+  function HomeScreen() {
+    _classCallCheck(this, HomeScreen);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(HomeScreen).apply(this, arguments));
+  }
+
+  _createClass(HomeScreen, [{
+    key: "render",
+    value: function render() {
+      var adcInfoStore = this.props.adcInfoStore;
+      return adcInfoStore.hasAddress ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom_Redirect__WEBPACK_IMPORTED_MODULE_2___default.a, {
+        to: "/".concat(adcInfoStore.address)
+      }) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_WalletStatus__WEBPACK_IMPORTED_MODULE_3__["default"], null);
+    }
+  }]);
+
+  return HomeScreen;
+}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+
+/* harmony default export */ __webpack_exports__["default"] = (Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["inject"])('adcInfoStore')(Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["observer"])(HomeScreen)));
+
+/***/ }),
+
+/***/ "./src/shared/HomeScreen/WalletStatus.js":
+/*!***********************************************!*\
+  !*** ./src/shared/HomeScreen/WalletStatus.js ***!
+  \***********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var mobx_react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-react/index.module.js");
 /* harmony import */ var _material_ui_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/index.es.js");
 /* harmony import */ var _CreateWallet__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./CreateWallet */ "./src/shared/HomeScreen/CreateWallet.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -94070,18 +94356,18 @@ var WalletUnavailable = function WalletUnavailable() {
   }, "AudioCoin wallet is unavailable. Please try again later."));
 };
 
-var HomeScreen =
+var WalletStatus =
 /*#__PURE__*/
 function (_Component) {
-  _inherits(HomeScreen, _Component);
+  _inherits(WalletStatus, _Component);
 
-  function HomeScreen() {
-    _classCallCheck(this, HomeScreen);
+  function WalletStatus() {
+    _classCallCheck(this, WalletStatus);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(HomeScreen).apply(this, arguments));
+    return _possibleConstructorReturn(this, _getPrototypeOf(WalletStatus).apply(this, arguments));
   }
 
-  _createClass(HomeScreen, [{
+  _createClass(WalletStatus, [{
     key: "render",
     value: function render() {
       var _this$props = this.props,
@@ -94103,10 +94389,10 @@ function (_Component) {
     }
   }]);
 
-  return HomeScreen;
+  return WalletStatus;
 }(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
 
-/* harmony default export */ __webpack_exports__["default"] = (Object(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["withStyles"])(styles)(Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["inject"])('adcInfoStore')(Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["observer"])(HomeScreen))));
+/* harmony default export */ __webpack_exports__["default"] = (Object(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["withStyles"])(styles)(Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["inject"])('adcInfoStore')(Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["observer"])(WalletStatus))));
 
 /***/ }),
 
@@ -94159,9 +94445,12 @@ function (_Component) {
   _createClass(WalletScreen, [{
     key: "render",
     value: function render() {
+      var adcInfoStore = this.props.adcInfoStore;
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Grid"], {
         container: true
-      }, "Wallet Screen");
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Typography"], {
+        color: "secondary"
+      }, adcInfoStore.address));
     }
   }]);
 
@@ -94207,80 +94496,80 @@ function makeApiRequest(_x, _x2) {
 function _makeApiRequest() {
   _makeApiRequest = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee4(url, params) {
-    return regeneratorRuntime.wrap(function _callee4$(_context4) {
+  regeneratorRuntime.mark(function _callee5(url, params) {
+    return regeneratorRuntime.wrap(function _callee5$(_context5) {
       while (1) {
-        switch (_context4.prev = _context4.next) {
+        switch (_context5.prev = _context5.next) {
           case 0:
-            return _context4.abrupt("return", new Promise(
+            return _context5.abrupt("return", new Promise(
             /*#__PURE__*/
             function () {
               var _ref = _asyncToGenerator(
               /*#__PURE__*/
-              regeneratorRuntime.mark(function _callee3(resolve, reject) {
+              regeneratorRuntime.mark(function _callee4(resolve, reject) {
                 var query, requestUrl, rawResponse, response;
-                return regeneratorRuntime.wrap(function _callee3$(_context3) {
+                return regeneratorRuntime.wrap(function _callee4$(_context4) {
                   while (1) {
-                    switch (_context3.prev = _context3.next) {
+                    switch (_context4.prev = _context4.next) {
                       case 0:
-                        _context3.prev = 0;
+                        _context4.prev = 0;
                         query = params ? "?".concat(querystring__WEBPACK_IMPORTED_MODULE_1___default.a.stringify(params)) : '';
                         requestUrl = "".concat(api, "/").concat(url).concat(query);
-                        _context3.next = 5;
+                        _context4.next = 5;
                         return node_fetch__WEBPACK_IMPORTED_MODULE_0___default()(requestUrl, {
                           method: 'GET'
                         });
 
                       case 5:
-                        rawResponse = _context3.sent;
+                        rawResponse = _context4.sent;
                         console.log(rawResponse.ok, rawResponse.status);
 
                         if (!rawResponse.ok) {
-                          _context3.next = 14;
+                          _context4.next = 14;
                           break;
                         }
 
-                        _context3.next = 10;
+                        _context4.next = 10;
                         return rawResponse.json();
 
                       case 10:
-                        response = _context3.sent;
+                        response = _context4.sent;
                         resolve(response);
-                        _context3.next = 15;
+                        _context4.next = 15;
                         break;
 
                       case 14:
                         reject(new Error("Request did not complete successfully."));
 
                       case 15:
-                        _context3.next = 21;
+                        _context4.next = 21;
                         break;
 
                       case 17:
-                        _context3.prev = 17;
-                        _context3.t0 = _context3["catch"](0);
-                        console.log('ERROR: ', _context3.t0);
-                        reject(_context3.t0);
+                        _context4.prev = 17;
+                        _context4.t0 = _context4["catch"](0);
+                        console.log('ERROR: ', _context4.t0);
+                        reject(_context4.t0);
 
                       case 21:
                       case "end":
-                        return _context3.stop();
+                        return _context4.stop();
                     }
                   }
-                }, _callee3, this, [[0, 17]]);
+                }, _callee4, this, [[0, 17]]);
               }));
 
-              return function (_x3, _x4) {
+              return function (_x4, _x5) {
                 return _ref.apply(this, arguments);
               };
             }()));
 
           case 1:
           case "end":
-            return _context4.stop();
+            return _context5.stop();
         }
       }
-    }, _callee4, this);
+    }, _callee5, this);
   }));
   return _makeApiRequest.apply(this, arguments);
 }
@@ -94328,9 +94617,7 @@ function () {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                return _context2.abrupt("return", new Promise(function (y, n) {
-                  return y({});
-                }));
+                return _context2.abrupt("return", makeApiRequest('getInfo'));
 
               case 1:
               case "end":
@@ -94345,6 +94632,29 @@ function () {
       }
 
       return getInfo;
+    }()
+  }, {
+    key: "getBalance",
+    value: function () {
+      var _getBalance = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee3(address) {
+        return regeneratorRuntime.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this);
+      }));
+
+      function getBalance(_x3) {
+        return _getBalance.apply(this, arguments);
+      }
+
+      return getBalance;
     }()
   }]);
 
