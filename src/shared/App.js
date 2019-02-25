@@ -17,7 +17,7 @@ import WalletScreen from './WalletScreen/WalletScreen'
 const styles = theme => ({
   content: {
     height: '100%',
-    paddingTop: '70px',
+    padding: '70px 25px 0 25px',
   },
   flex: {
     flex: 1,

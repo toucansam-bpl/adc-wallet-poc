@@ -37,4 +37,9 @@ export default class NodeApi {
     // return new Promise((y,n) => y({}))
     return makeApiRequest('getInfo')
   }
+
+  async getBalance(address) {
+    // hopefully remote ADC node finishes syncing, verify that balance is correct based on inputs and outputs
+    // send some transactions directly with the rpc api to understand how it's done
+  }
 }

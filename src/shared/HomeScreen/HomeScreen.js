@@ -10,7 +10,7 @@ class HomeScreen extends Component {
     const { adcInfoStore } = this.props
     
     return adcInfoStore.hasAddress
-      ? (<Redirect to={`/${adcInfoStore.address}`} />)
+      ? (<Redirect push to={`/${adcInfoStore.address}`} />)
       : (<WalletStatus />)
   }
 }

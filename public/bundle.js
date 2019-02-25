@@ -94116,7 +94116,7 @@ var styles = function styles(theme) {
   return {
     content: {
       height: '100%',
-      paddingTop: '70px'
+      padding: '70px 25px 0 25px'
     },
     flex: {
       flex: 1
@@ -94281,6 +94281,7 @@ function (_Component) {
     value: function render() {
       var adcInfoStore = this.props.adcInfoStore;
       return adcInfoStore.hasAddress ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom_Redirect__WEBPACK_IMPORTED_MODULE_2___default.a, {
+        push: true,
         to: "/".concat(adcInfoStore.address)
       }) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_WalletStatus__WEBPACK_IMPORTED_MODULE_3__["default"], null);
     }
@@ -94447,10 +94448,34 @@ function (_Component) {
     value: function render() {
       var adcInfoStore = this.props.adcInfoStore;
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Grid"], {
-        container: true
+        container: true,
+        direction: "column",
+        spacing: 24
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Grid"], {
+        item: true,
+        xs: 12
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Grid"], {
+        container: true,
+        spacing: 24
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Grid"], {
+        item: true,
+        xs: 6
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Card"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["CardContent"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Typography"], {
+        color: "secondary",
+        variant: "headline"
+      }, "Address: ".concat(adcInfoStore.address)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Typography"], {
+        variant: "headline"
+      }, "Balance: 0.00000000")))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Grid"], {
+        item: true,
+        xs: 6
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Card"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["CardContent"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Typography"], {
+        variant: "headline"
+      }, "Send ADC"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["TextField"], null)))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Grid"], {
+        item: true,
+        xs: 12
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Typography"], {
-        color: "secondary"
-      }, adcInfoStore.address));
+        variant: "headline"
+      }, "Transactions"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Card"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["CardContent"], null, "Hi"))));
     }
   }]);
 
