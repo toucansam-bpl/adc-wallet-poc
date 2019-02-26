@@ -94684,7 +94684,9 @@ function () {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                return _context3.abrupt("return", makeApiRequest('getreceivedbyaddress', address));
+                return _context3.abrupt("return", makeApiRequest('getBalance', {
+                  address: address
+                }));
 
               case 1:
               case "end":

@@ -19,6 +19,7 @@ const apiResponder = (fn) => {
 }
 
 app.get('/createNewAddress', apiResponder(() => adc.getNewAddress()))
+app.get('/getBalance', apiResponder(() => adc.getBalance({ address: req.params.address })))
 app.get('/getInfo', apiResponder(() => adc.getInfo()))
 
 export default app

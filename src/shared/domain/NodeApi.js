@@ -39,6 +39,6 @@ export default class NodeApi {
   }
 
   async getBalance(address) {
-    return makeApiRequest('getreceivedbyaddress', address)
+    return makeApiRequest('getBalance', { address })
   }
 }

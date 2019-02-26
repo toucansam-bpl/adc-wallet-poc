@@ -178,6 +178,11 @@ var apiResponder = function apiResponder(fn) {
 app.get('/createNewAddress', apiResponder(function () {
   return adc.getNewAddress();
 }));
+app.get('/getBalance', apiResponder(function () {
+  return adc.getBalance({
+    address: req.params.address
+  });
+}));
 app.get('/getInfo', apiResponder(function () {
   return adc.getInfo();
 }));
@@ -988,7 +993,9 @@ function () {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                return _context3.abrupt("return", makeApiRequest('getreceivedbyaddress', address));
+                return _context3.abrupt("return", makeApiRequest('getBalance', {
+                  address: address
+                }));
 
               case 1:
               case "end":
