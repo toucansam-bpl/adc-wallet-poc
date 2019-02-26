@@ -94865,6 +94865,7 @@ function () {
 
 Object(mobx__WEBPACK_IMPORTED_MODULE_0__["decorate"])(AdcInfoStore, {
   address: mobx__WEBPACK_IMPORTED_MODULE_0__["observable"],
+  balance: mobx__WEBPACK_IMPORTED_MODULE_0__["observable"],
   createWallet: mobx_task__WEBPACK_IMPORTED_MODULE_1__["task"],
   hasAddress: mobx__WEBPACK_IMPORTED_MODULE_0__["computed"],
   init: mobx_task__WEBPACK_IMPORTED_MODULE_1__["task"],

@@ -46,6 +46,7 @@ export default class AdcInfoStore {
 
 decorate(AdcInfoStore, {
   address: observable,
+  balance: observable,
   createWallet: task,
   hasAddress: computed,
   init: task,
