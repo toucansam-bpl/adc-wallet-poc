@@ -178,7 +178,7 @@ var apiResponder = function apiResponder(fn) {
 app.get('/createNewAddress', apiResponder(function () {
   return adc.getNewAddress();
 }));
-app.get('/getBalance', apiResponder(function () {
+app.get('/getBalance', apiResponder(function (req) {
   return adc.getBalance({
     address: req.params.address
   });
