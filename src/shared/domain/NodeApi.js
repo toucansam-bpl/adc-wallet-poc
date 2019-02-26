@@ -36,8 +36,8 @@ export default class NodeApi {
   }
 
   async getInfo() {
-    // return new Promise((y,n) => y({}))
-    return makeApiRequest('getInfo')
+    return new Promise((y,n) => y({}))
+    // return makeApiRequest('getInfo')
   }
 
   async getBalance(address) {

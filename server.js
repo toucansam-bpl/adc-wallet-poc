@@ -132,122 +132,127 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 var app = express__WEBPACK_IMPORTED_MODULE_0___default()();
 var adc = new node_adc__WEBPACK_IMPORTED_MODULE_1___default.a(_credentials_json__WEBPACK_IMPORTED_MODULE_2__.user, _credentials_json__WEBPACK_IMPORTED_MODULE_2__.password);
-
-var apiResponder = function apiResponder(fn) {
-  return (
-    /*#__PURE__*/
-    function () {
-      var _ref = _asyncToGenerator(
-      /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee(req, res, next) {
-        return regeneratorRuntime.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                try {
-                  res.json(fn(req));
-                } catch (ex) {
-                  next(ex);
-                }
-
-              case 1:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee, this);
-      }));
-
-      return function (_x, _x2, _x3) {
-        return _ref.apply(this, arguments);
-      };
-    }()
-  );
-};
-
-app.get('/createNewAddress', apiResponder(
+app.get('/createNewAddress',
 /*#__PURE__*/
-_asyncToGenerator(
-/*#__PURE__*/
-regeneratorRuntime.mark(function _callee2() {
-  var address;
-  return regeneratorRuntime.wrap(function _callee2$(_context2) {
-    while (1) {
-      switch (_context2.prev = _context2.next) {
-        case 0:
-          _context2.next = 2;
-          return adc.getNewAddress();
+function () {
+  var _ref = _asyncToGenerator(
+  /*#__PURE__*/
+  regeneratorRuntime.mark(function _callee(req, res, next) {
+    var address;
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            _context.prev = 0;
+            _context.next = 3;
+            return adc.getNewAddress();
 
-        case 2:
-          address = _context2.sent;
-          console.log(address);
-          return _context2.abrupt("return", {
-            address: address
-          });
+          case 3:
+            address = _context.sent;
+            console.log(address);
+            res.json({
+              address: address
+            });
+            _context.next = 11;
+            break;
 
-        case 5:
-        case "end":
-          return _context2.stop();
+          case 8:
+            _context.prev = 8;
+            _context.t0 = _context["catch"](0);
+            next(_context.t0);
+
+          case 11:
+          case "end":
+            return _context.stop();
+        }
       }
-    }
-  }, _callee2, this);
-}))));
-app.get('/getBalance', apiResponder(
+    }, _callee, this, [[0, 8]]);
+  }));
+
+  return function (_x, _x2, _x3) {
+    return _ref.apply(this, arguments);
+  };
+}());
+app.get('/getBalance',
+/*#__PURE__*/
+function () {
+  var _ref2 = _asyncToGenerator(
+  /*#__PURE__*/
+  regeneratorRuntime.mark(function _callee2(req, res, next) {
+    var balance;
+    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            _context2.prev = 0;
+            console.log("Attempting to get balance for ".concat(req.query.address));
+            _context2.next = 4;
+            return adc.getBalance(req.query.address);
+
+          case 4:
+            balance = _context2.sent;
+            console.log(balance);
+            res.json({
+              balance: balance
+            });
+            _context2.next = 12;
+            break;
+
+          case 9:
+            _context2.prev = 9;
+            _context2.t0 = _context2["catch"](0);
+            next(_context2.t0);
+
+          case 12:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2, this, [[0, 9]]);
+  }));
+
+  return function (_x4, _x5, _x6) {
+    return _ref2.apply(this, arguments);
+  };
+}());
+app.get('/getInfo',
 /*#__PURE__*/
 function () {
   var _ref3 = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee3(req) {
-    var balance;
+  regeneratorRuntime.mark(function _callee3(req, res, next) {
+    var info;
     return regeneratorRuntime.wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
-            console.log("Attempting to get balance for ".concat(req.query.address));
+            _context3.prev = 0;
             _context3.next = 3;
-            return adc.getBalance(req.query.address);
+            return adc.getInfo();
 
           case 3:
-            balance = _context3.sent;
-            console.log(balance);
-            return _context3.abrupt("return", {
-              balance: balance
-            });
+            info = _context3.sent;
+            res.json(info);
+            _context3.next = 10;
+            break;
 
-          case 6:
+          case 7:
+            _context3.prev = 7;
+            _context3.t0 = _context3["catch"](0);
+            next(_context3.t0);
+
+          case 10:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, this);
+    }, _callee3, this, [[0, 7]]);
   }));
 
-  return function (_x4) {
+  return function (_x7, _x8, _x9) {
     return _ref3.apply(this, arguments);
   };
-}()));
-app.get('/getInfo', apiResponder(
-/*#__PURE__*/
-_asyncToGenerator(
-/*#__PURE__*/
-regeneratorRuntime.mark(function _callee4() {
-  return regeneratorRuntime.wrap(function _callee4$(_context4) {
-    while (1) {
-      switch (_context4.prev = _context4.next) {
-        case 0:
-          _context4.next = 2;
-          return adc.getInfo();
-
-        case 2:
-          return _context4.abrupt("return", _context4.sent);
-
-        case 3:
-        case "end":
-          return _context4.stop();
-      }
-    }
-  }, _callee4, this);
-}))));
+}());
 /* harmony default export */ __webpack_exports__["default"] = (app);
 
 /***/ }),
@@ -1024,7 +1029,9 @@ function () {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                return _context2.abrupt("return", makeApiRequest('getInfo'));
+                return _context2.abrupt("return", new Promise(function (y, n) {
+                  return y({});
+                }));
 
               case 1:
               case "end":

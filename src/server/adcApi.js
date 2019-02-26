@@ -7,29 +7,34 @@ const app = express()
 const adc = new AdcClient(creds.user, creds.password)
 
 
-const apiResponder = (fn) => {
-  return async (req, res, next) => {
-    try {
-      res.json(fn(req))
-    } catch (ex) {
-      next(ex)
-    }
+app.get('/createNewAddress', async (req, res, next) => {
+  try {
+    const address = await adc.getNewAddress()
+    console.log(address)
+    res.json({ address })
+  } catch (ex) {
+    next(ex)
   }
-}
+})
 
-app.get('/createNewAddress', apiResponder(async () => {
-  const address = await adc.getNewAddress()
-  console.log(address)
-  return { address }
-}))
+app.get('/getBalance', async (req, res, next) => {
+  try {
+    console.log(`Attempting to get balance for ${req.query.address}`)
+    const balance = await adc.getBalance(req.query.address)
+    console.log(balance)
+    res.json({ balance })
+  } catch (ex) {
+    next(ex)
+  }
+})
 
-app.get('/getBalance', apiResponder(async req => {
-  console.log(`Attempting to get balance for ${req.query.address}`)
-  const balance = await adc.getBalance(req.query.address)
-  console.log(balance)
-  return { balance }
-}))
-
-app.get('/getInfo', apiResponder(async () => await adc.getInfo()))
+app.get('/getInfo', async (req, res, next) => {
+  try {
+    const info = await adc.getInfo()
+    res.json(info)
+  } catch (ex) {
+    next(ex)
+  }
+})
 
 export default app
