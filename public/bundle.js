@@ -94519,27 +94519,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 var api = '/adc';
 
-function makeApiRequest(_x) {
+function makeApiRequest(_x, _x2) {
   return _makeApiRequest.apply(this, arguments);
 }
 
 function _makeApiRequest() {
   _makeApiRequest = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee5(url) {
-    var _len,
-        params,
-        _key,
-        _args5 = arguments;
-
+  regeneratorRuntime.mark(function _callee5(url, params) {
     return regeneratorRuntime.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            for (_len = _args5.length, params = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-              params[_key - 1] = _args5[_key];
-            }
-
             return _context5.abrupt("return", new Promise(
             /*#__PURE__*/
             function () {
@@ -94598,12 +94589,12 @@ function _makeApiRequest() {
                 }, _callee4, this, [[0, 17]]);
               }));
 
-              return function (_x3, _x4) {
+              return function (_x4, _x5) {
                 return _ref.apply(this, arguments);
               };
             }()));
 
-          case 2:
+          case 1:
           case "end":
             return _context5.stop();
         }
@@ -94684,11 +94675,12 @@ function () {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
+                console.log(address);
                 return _context3.abrupt("return", makeApiRequest('getBalance', {
                   address: address
                 }));
 
-              case 1:
+              case 2:
               case "end":
                 return _context3.stop();
             }
@@ -94696,7 +94688,7 @@ function () {
         }, _callee3, this);
       }));
 
-      function getBalance(_x2) {
+      function getBalance(_x3) {
         return _getBalance.apply(this, arguments);
       }
 

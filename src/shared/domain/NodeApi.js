@@ -3,7 +3,7 @@ import qs from 'querystring'
 
 const api = '/adc'
 
-async function makeApiRequest(url, ... params) {
+async function makeApiRequest(url, params) {
   return new Promise(async (resolve, reject) => {
     try {
       const query = params ? `?${qs.stringify(params)}` : ''
@@ -39,6 +39,7 @@ export default class NodeApi {
   }
 
   async getBalance(address) {
+    console.log(address)
     return makeApiRequest('getBalance', { address })
   }
 }
