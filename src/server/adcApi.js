@@ -11,8 +11,10 @@ const apiResponder = (fn) => {
   return async (req, res, next) => {
     try {
       const response = await fn(req)
+      console.log(response)
       res.json(response)
     } catch (ex) {
+      console.log(ex)
       next(ex)
     }
   }

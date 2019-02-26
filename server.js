@@ -151,21 +151,23 @@ var apiResponder = function apiResponder(fn) {
 
               case 3:
                 response = _context.sent;
+                console.log(response);
                 res.json(response);
-                _context.next = 10;
+                _context.next = 12;
                 break;
 
-              case 7:
-                _context.prev = 7;
+              case 8:
+                _context.prev = 8;
                 _context.t0 = _context["catch"](0);
+                console.log(_context.t0);
                 next(_context.t0);
 
-              case 10:
+              case 12:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, this, [[0, 7]]);
+        }, _callee, this, [[0, 8]]);
       }));
 
       return function (_x, _x2, _x3) {
