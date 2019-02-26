@@ -8,6 +8,7 @@ import { task } from 'mobx-task'
 
 export default class AdcInfoStore {
   address = null
+  balance = 0
   isNodeActive = false
 
   constructor(nodeApi) {
@@ -30,6 +31,12 @@ export default class AdcInfoStore {
   get hasAddress() {
     return this.address !== null
   }
+
+  async loadAddressData() {
+    const balance = await this.nodeApi.getBalance(this.address)
+    
+    this.balance = balance
+  }
 }
 
 decorate(AdcInfoStore, {
@@ -37,4 +44,5 @@ decorate(AdcInfoStore, {
   createWallet: task,
   hasAddress: computed,
   init: task,
+  loadAddressData: task,
 })

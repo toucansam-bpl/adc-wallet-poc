@@ -4,6 +4,10 @@ import { Card, CardContent, Grid, Typography, TextField, } from '@material-ui/co
 
 
 class WalletScreen extends Component {
+  componentDidMount() {
+    this.props.adcInfoStore.loadAddressData()
+  }
+
   render() {
     const { adcInfoStore } = this.props
 
@@ -18,7 +22,7 @@ class WalletScreen extends Component {
                   {`Address: ${adcInfoStore.address}`}
                 </Typography>
                 <Typography variant="headline">
-                  {`Balance: 0.00000000`}
+                  {`Balance: ${adcInfoStore.balance.toFixed(8)}`}
                 </Typography>
               </CardContent>
             </Card>

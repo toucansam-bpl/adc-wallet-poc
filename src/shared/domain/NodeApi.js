@@ -3,7 +3,7 @@ import qs from 'querystring'
 
 const api = '/adc'
 
-async function makeApiRequest(url, params) {
+async function makeApiRequest(url, ... params) {
   return new Promise(async (resolve, reject) => {
     try {
       const query = params ? `?${qs.stringify(params)}` : ''
@@ -29,8 +29,8 @@ async function makeApiRequest(url, params) {
 
 export default class NodeApi {
   async createNewAddress() {
-    // return new Promise((y,n) => y({}))
-    return makeApiRequest('createNewAddress')
+    return new Promise((y,n) => y('Aev2bvXGeVEtqaBKXBM8xDPJ5BCLKCZvzB'))
+    // return makeApiRequest('createNewAddress')
   }
 
   async getInfo() {
@@ -39,7 +39,6 @@ export default class NodeApi {
   }
 
   async getBalance(address) {
-    // hopefully remote ADC node finishes syncing, verify that balance is correct based on inputs and outputs
-    // send some transactions directly with the rpc api to understand how it's done
+    return makeApiRequest('getreceivedbyaddress', address)
   }
 }

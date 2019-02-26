@@ -94444,6 +94444,11 @@ function (_Component) {
   }
 
   _createClass(WalletScreen, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      this.props.adcInfoStore.loadAddressData();
+    }
+  }, {
     key: "render",
     value: function render() {
       var adcInfoStore = this.props.adcInfoStore;
@@ -94465,7 +94470,7 @@ function (_Component) {
         variant: "headline"
       }, "Address: ".concat(adcInfoStore.address)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Typography"], {
         variant: "headline"
-      }, "Balance: 0.00000000")))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Grid"], {
+      }, "Balance: ".concat(adcInfoStore.balance.toFixed(8)))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Grid"], {
         item: true,
         xs: 6
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Card"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["CardContent"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Typography"], {
@@ -94514,18 +94519,27 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 var api = '/adc';
 
-function makeApiRequest(_x, _x2) {
+function makeApiRequest(_x) {
   return _makeApiRequest.apply(this, arguments);
 }
 
 function _makeApiRequest() {
   _makeApiRequest = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee5(url, params) {
+  regeneratorRuntime.mark(function _callee5(url) {
+    var _len,
+        params,
+        _key,
+        _args5 = arguments;
+
     return regeneratorRuntime.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
+            for (_len = _args5.length, params = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+              params[_key - 1] = _args5[_key];
+            }
+
             return _context5.abrupt("return", new Promise(
             /*#__PURE__*/
             function () {
@@ -94584,12 +94598,12 @@ function _makeApiRequest() {
                 }, _callee4, this, [[0, 17]]);
               }));
 
-              return function (_x4, _x5) {
+              return function (_x3, _x4) {
                 return _ref.apply(this, arguments);
               };
             }()));
 
-          case 1:
+          case 2:
           case "end":
             return _context5.stop();
         }
@@ -94616,7 +94630,9 @@ function () {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                return _context.abrupt("return", makeApiRequest('createNewAddress'));
+                return _context.abrupt("return", new Promise(function (y, n) {
+                  return y('Aev2bvXGeVEtqaBKXBM8xDPJ5BCLKCZvzB');
+                }));
 
               case 1:
               case "end":
@@ -94668,6 +94684,9 @@ function () {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
+                return _context3.abrupt("return", makeApiRequest('getreceivedbyaddress', address));
+
+              case 1:
               case "end":
                 return _context3.stop();
             }
@@ -94675,7 +94694,7 @@ function () {
         }, _callee3, this);
       }));
 
-      function getBalance(_x3) {
+      function getBalance(_x2) {
         return _getBalance.apply(this, arguments);
       }
 
@@ -94723,6 +94742,7 @@ function () {
     _classCallCheck(this, AdcInfoStore);
 
     this.address = null;
+    this.balance = 0;
     this.isNodeActive = false;
     this.nodeApi = nodeApi;
   }
@@ -94793,6 +94813,38 @@ function () {
       return createWallet;
     }()
   }, {
+    key: "loadAddressData",
+    value: function () {
+      var _loadAddressData = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee3() {
+        var balance;
+        return regeneratorRuntime.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.next = 2;
+                return this.nodeApi.getBalance(this.address);
+
+              case 2:
+                balance = _context3.sent;
+                this.balance = balance;
+
+              case 4:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this);
+      }));
+
+      function loadAddressData() {
+        return _loadAddressData.apply(this, arguments);
+      }
+
+      return loadAddressData;
+    }()
+  }, {
     key: "hasAddress",
     get: function get() {
       return this.address !== null;
@@ -94807,7 +94859,8 @@ Object(mobx__WEBPACK_IMPORTED_MODULE_0__["decorate"])(AdcInfoStore, {
   address: mobx__WEBPACK_IMPORTED_MODULE_0__["observable"],
   createWallet: mobx_task__WEBPACK_IMPORTED_MODULE_1__["task"],
   hasAddress: mobx__WEBPACK_IMPORTED_MODULE_0__["computed"],
-  init: mobx_task__WEBPACK_IMPORTED_MODULE_1__["task"]
+  init: mobx_task__WEBPACK_IMPORTED_MODULE_1__["task"],
+  loadAddressData: mobx_task__WEBPACK_IMPORTED_MODULE_1__["task"]
 });
 
 /***/ }),
