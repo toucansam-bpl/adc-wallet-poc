@@ -10,18 +10,25 @@ const adc = new AdcClient(creds.user, creds.password)
 const apiResponder = (fn) => {
   return async (req, res, next) => {
     try {
-      const response = await fn(req)
-      console.log(response)
-      res.json(response)
+      res.json(fn(req))
     } catch (ex) {
-      console.log(ex)
       next(ex)
     }
   }
 }
 
-app.get('/createNewAddress', apiResponder(() => adc.getNewAddress()))
-app.get('/getBalance/:address', apiResponder(req => adc.getBalance(req.params.address)))
-app.get('/getInfo', apiResponder(() => adc.getInfo()))
+app.get('/createNewAddress', apiResponder(async () => {
+  const address = await adc.getNewAddress()
+  console.log(address)
+  return { address }
+}))
+
+app.get('/getBalance/:address', apiResponder(async req => {
+  const balance = await adc.getBalance(req.params.address)
+  console.log(balance)
+  return { balance }
+}))
+
+app.get('/getInfo', apiResponder(async () => await adc.getInfo()))
 
 export default app

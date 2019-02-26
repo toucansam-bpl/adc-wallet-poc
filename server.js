@@ -140,34 +140,22 @@ var apiResponder = function apiResponder(fn) {
       var _ref = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee(req, res, next) {
-        var response;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.prev = 0;
-                _context.next = 3;
-                return fn(req);
+                try {
+                  res.json(fn(req));
+                } catch (ex) {
+                  next(ex);
+                }
 
-              case 3:
-                response = _context.sent;
-                console.log(response);
-                res.json(response);
-                _context.next = 12;
-                break;
-
-              case 8:
-                _context.prev = 8;
-                _context.t0 = _context["catch"](0);
-                console.log(_context.t0);
-                next(_context.t0);
-
-              case 12:
+              case 1:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, this, [[0, 8]]);
+        }, _callee, this);
       }));
 
       return function (_x, _x2, _x3) {
@@ -177,15 +165,88 @@ var apiResponder = function apiResponder(fn) {
   );
 };
 
-app.get('/createNewAddress', apiResponder(function () {
-  return adc.getNewAddress();
-}));
-app.get('/getBalance/:address', apiResponder(function (req) {
-  return adc.getBalance(req.params.address);
-}));
-app.get('/getInfo', apiResponder(function () {
-  return adc.getInfo();
-}));
+app.get('/createNewAddress', apiResponder(
+/*#__PURE__*/
+_asyncToGenerator(
+/*#__PURE__*/
+regeneratorRuntime.mark(function _callee2() {
+  var address;
+  return regeneratorRuntime.wrap(function _callee2$(_context2) {
+    while (1) {
+      switch (_context2.prev = _context2.next) {
+        case 0:
+          _context2.next = 2;
+          return adc.getNewAddress();
+
+        case 2:
+          address = _context2.sent;
+          console.log(address);
+          return _context2.abrupt("return", {
+            address: address
+          });
+
+        case 5:
+        case "end":
+          return _context2.stop();
+      }
+    }
+  }, _callee2, this);
+}))));
+app.get('/getBalance/:address', apiResponder(
+/*#__PURE__*/
+function () {
+  var _ref3 = _asyncToGenerator(
+  /*#__PURE__*/
+  regeneratorRuntime.mark(function _callee3(req) {
+    var balance;
+    return regeneratorRuntime.wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            _context3.next = 2;
+            return adc.getBalance(req.params.address);
+
+          case 2:
+            balance = _context3.sent;
+            console.log(balance);
+            return _context3.abrupt("return", {
+              balance: balance
+            });
+
+          case 5:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3, this);
+  }));
+
+  return function (_x4) {
+    return _ref3.apply(this, arguments);
+  };
+}()));
+app.get('/getInfo', apiResponder(
+/*#__PURE__*/
+_asyncToGenerator(
+/*#__PURE__*/
+regeneratorRuntime.mark(function _callee4() {
+  return regeneratorRuntime.wrap(function _callee4$(_context4) {
+    while (1) {
+      switch (_context4.prev = _context4.next) {
+        case 0:
+          _context4.next = 2;
+          return adc.getInfo();
+
+        case 2:
+          return _context4.abrupt("return", _context4.sent);
+
+        case 3:
+        case "end":
+          return _context4.stop();
+      }
+    }
+  }, _callee4, this);
+}))));
 /* harmony default export */ __webpack_exports__["default"] = (app);
 
 /***/ }),
