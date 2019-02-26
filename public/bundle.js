@@ -94543,50 +94543,52 @@ function _makeApiRequest() {
                     switch (_context4.prev = _context4.next) {
                       case 0:
                         _context4.prev = 0;
+                        console.log(params);
                         query = params ? "?".concat(querystring__WEBPACK_IMPORTED_MODULE_1___default.a.stringify(params)) : '';
                         requestUrl = "".concat(api, "/").concat(url).concat(query);
-                        _context4.next = 5;
+                        console.log("Requesting ".concat(requestUrl));
+                        _context4.next = 7;
                         return node_fetch__WEBPACK_IMPORTED_MODULE_0___default()(requestUrl, {
                           method: 'GET'
                         });
 
-                      case 5:
+                      case 7:
                         rawResponse = _context4.sent;
                         console.log(rawResponse.ok, rawResponse.status);
 
                         if (!rawResponse.ok) {
-                          _context4.next = 14;
+                          _context4.next = 16;
                           break;
                         }
 
-                        _context4.next = 10;
+                        _context4.next = 12;
                         return rawResponse.json();
 
-                      case 10:
+                      case 12:
                         response = _context4.sent;
                         resolve(response);
-                        _context4.next = 15;
+                        _context4.next = 17;
                         break;
 
-                      case 14:
+                      case 16:
                         reject(new Error("Request did not complete successfully."));
 
-                      case 15:
-                        _context4.next = 21;
+                      case 17:
+                        _context4.next = 23;
                         break;
 
-                      case 17:
-                        _context4.prev = 17;
+                      case 19:
+                        _context4.prev = 19;
                         _context4.t0 = _context4["catch"](0);
                         console.log('ERROR: ', _context4.t0);
                         reject(_context4.t0);
 
-                      case 21:
+                      case 23:
                       case "end":
                         return _context4.stop();
                     }
                   }
-                }, _callee4, this, [[0, 17]]);
+                }, _callee4, this, [[0, 19]]);
               }));
 
               return function (_x4, _x5) {

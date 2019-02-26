@@ -23,8 +23,9 @@ app.get('/createNewAddress', apiResponder(async () => {
   return { address }
 }))
 
-app.get('/getBalance/:address', apiResponder(async req => {
-  const balance = await adc.getBalance(req.params.address)
+app.get('/getBalance', apiResponder(async req => {
+  console.log(`Attempting to get balance for ${req.query.address}`)
+  const balance = await adc.getBalance(req.query.address)
   console.log(balance)
   return { balance }
 }))

@@ -3152,9 +3152,9 @@ nice-try@^1.0.4:
   resolved "https://registry.yarnpkg.com/nice-try/-/nice-try-1.0.5.tgz#a3378a7696ce7d223e88fc9b764bd7ef1089e366"
   integrity sha512-1nh45deeb5olNY7eX82BkPO7SSxR5SSYJiPTrTdFUVYwAl8CKMA5N9PjTYkHiRjisVcxcQ1HXdLhx2qxxJzLNQ==
 
-"node-adc@git+https://github.com/toucansam-bpl/node-adc":
+"node-adc@https://github.com/toucansam-bpl/node-adc":
   version "0.0.1"
-  resolved "git+https://github.com/toucansam-bpl/node-adc#5d1f5ffd25602a31f686580ec0d3e3e80ca66be6"
+  resolved "https://github.com/toucansam-bpl/node-adc#579a2b8f660d08e0d4975711fb2dab55062c9d45"
   dependencies:
     "@babel/polyfill" "^7.2.5"
     btoa "^1.2.1"

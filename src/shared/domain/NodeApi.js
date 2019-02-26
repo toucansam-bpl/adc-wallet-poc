@@ -6,9 +6,11 @@ const api = '/adc'
 async function makeApiRequest(url, params) {
   return new Promise(async (resolve, reject) => {
     try {
+      console.log(params)
       const query = params ? `?${qs.stringify(params)}` : ''
       const requestUrl = `${api}/${url}${query}`
 
+      console.log(`Requesting ${requestUrl}`)
       const rawResponse = await fetch(requestUrl, {
         method: 'GET',
       })
