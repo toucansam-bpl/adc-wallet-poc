@@ -995,7 +995,9 @@ function () {
             switch (_context.prev = _context.next) {
               case 0:
                 return _context.abrupt("return", new Promise(function (y, n) {
-                  return y('Aev2bvXGeVEtqaBKXBM8xDPJ5BCLKCZvzB');
+                  return y({
+                    address: 'Aev2bvXGeVEtqaBKXBM8xDPJ5BCLKCZvzB'
+                  });
                 }));
 
               case 1:
@@ -1153,6 +1155,8 @@ function () {
       var _createWallet = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee2() {
+        var _this = this;
+
         var address;
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
@@ -1164,7 +1168,9 @@ function () {
               case 2:
                 address = _context2.sent;
                 console.log(address);
-                this.address = address;
+                Object(mobx__WEBPACK_IMPORTED_MODULE_0__["runInAction"])(function () {
+                  _this.address = address.address;
+                });
 
               case 5:
               case "end":
@@ -1186,6 +1192,8 @@ function () {
       var _loadAddressData = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee3() {
+        var _this2 = this;
+
         var balance;
         return regeneratorRuntime.wrap(function _callee3$(_context3) {
           while (1) {
@@ -1196,7 +1204,9 @@ function () {
 
               case 2:
                 balance = _context3.sent;
-                this.balance = balance;
+                Object(mobx__WEBPACK_IMPORTED_MODULE_0__["runInAction"])(function () {
+                  _this2.balance = balance.balance;
+                });
 
               case 4:
               case "end":

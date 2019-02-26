@@ -2,6 +2,7 @@ import { action,
          computed, 
          decorate,
          observable,
+         runInAction,
        } from 'mobx'
 import { task } from 'mobx-task'
 
@@ -25,7 +26,9 @@ export default class AdcInfoStore {
     const address = await this.nodeApi.createNewAddress()
     console.log(address)
 
-    this.address = address
+    runInAction(() => {
+      this.address = address.address
+    })
   }
 
   get hasAddress() {
@@ -35,7 +38,9 @@ export default class AdcInfoStore {
   async loadAddressData() {
     const balance = await this.nodeApi.getBalance(this.address)
     
-    this.balance = balance
+    runInAction(() => {
+      this.balance = balance.balance
+    })
   }
 }
 
