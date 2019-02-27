@@ -94742,45 +94742,44 @@ function _makeApiRequest() {
                           args.body = JSON.stringify(params);
                         }
 
-                        console.log(args);
-                        _context5.next = 7;
+                        _context5.next = 6;
                         return node_fetch__WEBPACK_IMPORTED_MODULE_0___default()(requestUrl, args);
 
-                      case 7:
+                      case 6:
                         rawResponse = _context5.sent;
 
                         if (!rawResponse.ok) {
-                          _context5.next = 15;
+                          _context5.next = 14;
                           break;
                         }
 
-                        _context5.next = 11;
+                        _context5.next = 10;
                         return rawResponse.json();
 
-                      case 11:
+                      case 10:
                         response = _context5.sent;
                         resolve(response);
-                        _context5.next = 16;
+                        _context5.next = 15;
                         break;
 
-                      case 15:
+                      case 14:
                         reject(new Error("Request did not complete successfully."));
 
-                      case 16:
-                        _context5.next = 21;
+                      case 15:
+                        _context5.next = 20;
                         break;
 
-                      case 18:
-                        _context5.prev = 18;
+                      case 17:
+                        _context5.prev = 17;
                         _context5.t0 = _context5["catch"](0);
                         reject(_context5.t0);
 
-                      case 21:
+                      case 20:
                       case "end":
                         return _context5.stop();
                     }
                   }
-                }, _callee5, this, [[0, 18]]);
+                }, _callee5, this, [[0, 17]]);
               }));
 
               return function (_x5, _x6) {
@@ -94845,9 +94844,7 @@ function () {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                return _context2.abrupt("return", new Promise(function (y, n) {
-                  return y({});
-                }));
+                return _context2.abrupt("return", makeApiRequest('getInfo'));
 
               case 1:
               case "end":
@@ -94873,10 +94870,8 @@ function () {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                return _context3.abrupt("return", new Promise(function (y, n) {
-                  return y({
-                    balance: 2
-                  });
+                return _context3.abrupt("return", makeApiRequest('getBalance', {
+                  address: address
                 }));
 
               case 1:

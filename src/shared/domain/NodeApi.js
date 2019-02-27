@@ -21,7 +21,6 @@ async function makeApiRequest(url, params, method = 'GET') {
         args.body = JSON.stringify(params)
       }
 
-      console.log(args)
       const rawResponse = await fetch(requestUrl, args)
 
       if (rawResponse.ok) {
@@ -43,13 +42,13 @@ export default class NodeApi {
   }
 
   async getInfo() {
-    return new Promise((y,n) => y({}))
-    // return makeApiRequest('getInfo')
+    // return new Promise((y,n) => y({}))
+    return makeApiRequest('getInfo')
   }
 
   async getBalance(address) {
-    return new Promise((y,n) => y({ balance: 2 }))
-    // return makeApiRequest('getBalance', { address })
+    // return new Promise((y,n) => y({ balance: 2 }))
+    return makeApiRequest('getBalance', { address })
   }
 
   async sendAdc(tx) {
