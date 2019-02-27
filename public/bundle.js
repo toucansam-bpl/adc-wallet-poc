@@ -94116,7 +94116,7 @@ var styles = function styles(theme) {
   return {
     content: {
       height: '100%',
-      padding: '70px 25px 0 25px'
+      padding: '85px 25px 0 25px'
     },
     flex: {
       flex: 1
@@ -94397,6 +94397,161 @@ function (_Component) {
 
 /***/ }),
 
+/***/ "./src/shared/WalletScreen/SendAdc.js":
+/*!********************************************!*\
+  !*** ./src/shared/WalletScreen/SendAdc.js ***!
+  \********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var mobx_react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-react/index.module.js");
+/* harmony import */ var _material_ui_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/index.es.js");
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
+
+
+
+var styles = function styles(theme) {
+  return {
+    button: {
+      marginBottom: '8px',
+      marginTop: '16px'
+    },
+    container: {
+      display: 'flex',
+      flexWrap: 'wrap'
+    },
+    header: {
+      marginLeft: theme.spacing.unit
+    },
+    textField: {
+      marginLeft: theme.spacing.unit,
+      marginRight: theme.spacing.unit
+    }
+  };
+};
+
+var SendAdc =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(SendAdc, _Component);
+
+  function SendAdc() {
+    var _getPrototypeOf2;
+
+    var _this;
+
+    _classCallCheck(this, SendAdc);
+
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(SendAdc)).call.apply(_getPrototypeOf2, [this].concat(args)));
+    _this.state = {
+      hasBeenSubmitted: false,
+      sendAmount: '',
+      sendAmountIsValid: true,
+      sendTo: '',
+      sendToIsValid: true
+    };
+
+    _this.handleChange = function (name) {
+      return function (event) {
+        var val = event.target.value;
+
+        _this.setState(function (s) {
+          return _objectSpread({}, s, _defineProperty({}, name, val));
+        });
+      };
+    };
+
+    _this.handleSendAdc = function (evt) {};
+
+    return _this;
+  }
+
+  _createClass(SendAdc, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      this.props.adcInfoStore.loadAddressData();
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this$props = this.props,
+          adcInfoStore = _this$props.adcInfoStore,
+          classes = _this$props.classes;
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Paper"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Typography"], {
+        className: classes.header,
+        variant: "headline"
+      }, "Send ADC"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+        className: classes.container,
+        noValidate: true,
+        autoComplete: "off"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["TextField"], {
+        id: "send-to",
+        className: classes.textField,
+        error: !this.state.sendToIsValid,
+        fullWidth: true,
+        label: "Send To",
+        onChange: this.handleChange('sendTo'),
+        margin: "normal",
+        value: this.state.sendTo,
+        variant: "filled"
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["TextField"], {
+        id: "send-amount",
+        className: classes.textField,
+        error: !this.state.sendAmountIsValid,
+        label: "Amount",
+        onChange: this.handleChange('sendAmount'),
+        margin: "normal",
+        type: "number",
+        value: this.state.sendAmount,
+        variant: "filled"
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Button"], {
+        className: classes.button,
+        color: "secondary",
+        onClick: function onClick(evt) {
+          return console.log(evt);
+        },
+        variant: "contained"
+      }, "Send ADC")));
+    }
+  }]);
+
+  return SendAdc;
+}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+
+/* harmony default export */ __webpack_exports__["default"] = (Object(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["withStyles"])(styles)(Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["inject"])('adcInfoStore')(Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["observer"])(SendAdc))));
+
+/***/ }),
+
 /***/ "./src/shared/WalletScreen/WalletScreen.js":
 /*!*************************************************!*\
   !*** ./src/shared/WalletScreen/WalletScreen.js ***!
@@ -94410,6 +94565,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var mobx_react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-react/index.module.js");
 /* harmony import */ var _material_ui_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/index.es.js");
+/* harmony import */ var _SendAdc__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./SendAdc */ "./src/shared/WalletScreen/SendAdc.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -94427,6 +94583,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
 
 
 
@@ -94473,9 +94630,7 @@ function (_Component) {
       }, "Balance: ".concat(adcInfoStore.balance.toFixed(8)))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Grid"], {
         item: true,
         xs: 6
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Card"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["CardContent"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Typography"], {
-        variant: "headline"
-      }, "Send ADC"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["TextField"], null)))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Grid"], {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_SendAdc__WEBPACK_IMPORTED_MODULE_3__["default"], null)))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Grid"], {
         item: true,
         xs: 12
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Typography"], {
@@ -94681,12 +94836,13 @@ function () {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                console.log(address);
-                return _context3.abrupt("return", makeApiRequest('getBalance', {
-                  address: address
+                return _context3.abrupt("return", new Promise(function (y, n) {
+                  return y({
+                    balance: 2
+                  });
                 }));
 
-              case 2:
+              case 1:
               case "end":
                 return _context3.stop();
             }

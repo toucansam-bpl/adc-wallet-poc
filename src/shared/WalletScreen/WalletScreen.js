@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { inject, observer, } from 'mobx-react'
 import { Card, CardContent, Grid, Typography, TextField, } from '@material-ui/core'
+import SendAdc from './SendAdc';
 
 
 class WalletScreen extends Component {
@@ -28,14 +29,7 @@ class WalletScreen extends Component {
             </Card>
           </Grid>
           <Grid item xs={6}>
-            <Card>
-              <CardContent>
-                <Typography variant="headline">
-                  {`Send ADC`}
-                </Typography>
-                <TextField />
-              </CardContent>
-            </Card>
+            <SendAdc />
           </Grid>
         </Grid>
         </Grid>

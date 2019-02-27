@@ -41,7 +41,7 @@ export default class NodeApi {
   }
 
   async getBalance(address) {
-    console.log(address)
-    return makeApiRequest('getBalance', { address })
+    return new Promise((y,n) => y({ balance: 2 }))
+    // return makeApiRequest('getBalance', { address })
   }
 }
