@@ -253,6 +253,37 @@ function () {
     return _ref3.apply(this, arguments);
   };
 }());
+app.post('/sendAdc',
+/*#__PURE__*/
+function () {
+  var _ref4 = _asyncToGenerator(
+  /*#__PURE__*/
+  regeneratorRuntime.mark(function _callee4(req, res, next) {
+    return regeneratorRuntime.wrap(function _callee4$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            try {
+              console.log('Sending adc', req.body);
+              res.json({
+                success: true
+              });
+            } catch (ex) {
+              next(ex);
+            }
+
+          case 1:
+          case "end":
+            return _context4.stop();
+        }
+      }
+    }, _callee4, this);
+  }));
+
+  return function (_x10, _x11, _x12) {
+    return _ref4.apply(this, arguments);
+  };
+}());
 /* harmony default export */ __webpack_exports__["default"] = (app);
 
 /***/ }),
@@ -419,18 +450,22 @@ function () {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var express__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! express */ "express");
-/* harmony import */ var express__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(express__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _adcApi__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./adcApi */ "./src/server/adcApi.js");
-/* harmony import */ var _middleware_renderer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./middleware/renderer */ "./src/server/middleware/renderer.js");
+/* harmony import */ var body_parser__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! body-parser */ "body-parser");
+/* harmony import */ var body_parser__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(body_parser__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var express__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! express */ "express");
+/* harmony import */ var express__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(express__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _adcApi__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./adcApi */ "./src/server/adcApi.js");
+/* harmony import */ var _middleware_renderer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./middleware/renderer */ "./src/server/middleware/renderer.js");
 
 
 
-var app = express__WEBPACK_IMPORTED_MODULE_0___default()();
-app.get('^/$', _middleware_renderer__WEBPACK_IMPORTED_MODULE_2__["default"]);
-app.use('/adc', _adcApi__WEBPACK_IMPORTED_MODULE_1__["default"]);
-app.use(express__WEBPACK_IMPORTED_MODULE_0___default.a.static('public'));
-app.get('*', _middleware_renderer__WEBPACK_IMPORTED_MODULE_2__["default"]);
+
+var app = express__WEBPACK_IMPORTED_MODULE_1___default()();
+app.use(body_parser__WEBPACK_IMPORTED_MODULE_0___default.a.json());
+app.get('^/$', _middleware_renderer__WEBPACK_IMPORTED_MODULE_3__["default"]);
+app.use('/adc', _adcApi__WEBPACK_IMPORTED_MODULE_2__["default"]);
+app.use(express__WEBPACK_IMPORTED_MODULE_1___default.a.static('public'));
+app.get('*', _middleware_renderer__WEBPACK_IMPORTED_MODULE_3__["default"]);
 app.listen(3000, function () {
   console.log("Server is listening on port: 3000");
 });
@@ -870,6 +905,8 @@ function (_Component) {
     };
 
     _this.handleSendAdc = function () {
+      var adcInfoStore = _this.props.adcInfoStore;
+
       _this.validate();
 
       _this.setState(function (s) {
@@ -877,7 +914,7 @@ function (_Component) {
           hasBeenSubmitted: true
         });
       }, function () {
-        console.log('after set state with validate', _this.state);
+        adcInfoStore.sendAdc(_this.state.sendTo, parseFloat(_this.state.sendAmount));
       });
     };
 
@@ -1083,82 +1120,93 @@ function makeApiRequest(_x, _x2) {
 function _makeApiRequest() {
   _makeApiRequest = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee5(url, params) {
-    return regeneratorRuntime.wrap(function _callee5$(_context5) {
+  regeneratorRuntime.mark(function _callee6(url, params) {
+    var method,
+        _args6 = arguments;
+    return regeneratorRuntime.wrap(function _callee6$(_context6) {
       while (1) {
-        switch (_context5.prev = _context5.next) {
+        switch (_context6.prev = _context6.next) {
           case 0:
-            return _context5.abrupt("return", new Promise(
+            method = _args6.length > 2 && _args6[2] !== undefined ? _args6[2] : 'GET';
+            return _context6.abrupt("return", new Promise(
             /*#__PURE__*/
             function () {
               var _ref = _asyncToGenerator(
               /*#__PURE__*/
-              regeneratorRuntime.mark(function _callee4(resolve, reject) {
-                var query, requestUrl, rawResponse, response;
-                return regeneratorRuntime.wrap(function _callee4$(_context4) {
+              regeneratorRuntime.mark(function _callee5(resolve, reject) {
+                var requestUrl, args, rawResponse, response;
+                return regeneratorRuntime.wrap(function _callee5$(_context5) {
                   while (1) {
-                    switch (_context4.prev = _context4.next) {
+                    switch (_context5.prev = _context5.next) {
                       case 0:
-                        _context4.prev = 0;
-                        console.log(params);
-                        query = params ? "?".concat(querystring__WEBPACK_IMPORTED_MODULE_1___default.a.stringify(params)) : '';
-                        requestUrl = "".concat(api, "/").concat(url).concat(query);
-                        console.log("Requesting ".concat(requestUrl));
-                        _context4.next = 7;
-                        return node_fetch__WEBPACK_IMPORTED_MODULE_0___default()(requestUrl, {
-                          method: 'GET'
-                        });
+                        _context5.prev = 0;
+                        requestUrl = "".concat(api, "/").concat(url);
+                        args = {
+                          headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                          },
+                          method: method
+                        };
+
+                        if (method === 'GET') {
+                          requestUrl = "".concat(requestUrl, "?").concat(querystring__WEBPACK_IMPORTED_MODULE_1___default.a.stringify(params));
+                        } else {
+                          args.body = JSON.stringify(params);
+                        }
+
+                        console.log(args);
+                        _context5.next = 7;
+                        return node_fetch__WEBPACK_IMPORTED_MODULE_0___default()(requestUrl, args);
 
                       case 7:
-                        rawResponse = _context4.sent;
-                        console.log(rawResponse.ok, rawResponse.status);
+                        rawResponse = _context5.sent;
 
                         if (!rawResponse.ok) {
-                          _context4.next = 16;
+                          _context5.next = 15;
                           break;
                         }
 
-                        _context4.next = 12;
+                        _context5.next = 11;
                         return rawResponse.json();
 
-                      case 12:
-                        response = _context4.sent;
+                      case 11:
+                        response = _context5.sent;
                         resolve(response);
-                        _context4.next = 17;
+                        _context5.next = 16;
                         break;
 
-                      case 16:
+                      case 15:
                         reject(new Error("Request did not complete successfully."));
 
-                      case 17:
-                        _context4.next = 23;
+                      case 16:
+                        _context5.next = 21;
                         break;
 
-                      case 19:
-                        _context4.prev = 19;
-                        _context4.t0 = _context4["catch"](0);
-                        console.log('ERROR: ', _context4.t0);
-                        reject(_context4.t0);
+                      case 18:
+                        _context5.prev = 18;
+                        _context5.t0 = _context5["catch"](0);
+                        reject(_context5.t0);
 
-                      case 23:
+                      case 21:
                       case "end":
-                        return _context4.stop();
+                        return _context5.stop();
                     }
                   }
-                }, _callee4, this, [[0, 19]]);
+                }, _callee5, this, [[0, 18]]);
               }));
 
-              return function (_x4, _x5) {
+              return function (_x5, _x6) {
                 return _ref.apply(this, arguments);
               };
             }()));
 
-          case 1:
+          case 2:
           case "end":
-            return _context5.stop();
+            return _context6.stop();
         }
       }
-    }, _callee5, this);
+    }, _callee6, this);
   }));
   return _makeApiRequest.apply(this, arguments);
 }
@@ -1257,6 +1305,32 @@ function () {
       }
 
       return getBalance;
+    }()
+  }, {
+    key: "sendAdc",
+    value: function () {
+      var _sendAdc = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee4(tx) {
+        return regeneratorRuntime.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                return _context4.abrupt("return", makeApiRequest('sendAdc', tx, 'POST'));
+
+              case 1:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4, this);
+      }));
+
+      function sendAdc(_x4) {
+        return _sendAdc.apply(this, arguments);
+      }
+
+      return sendAdc;
     }()
   }]);
 
@@ -1413,6 +1487,36 @@ function () {
       return loadAddressData;
     }()
   }, {
+    key: "sendAdc",
+    value: function () {
+      var _sendAdc = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee4(to, amount) {
+        return regeneratorRuntime.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                this.nodeApi.sendAdc({
+                  amount: amount,
+                  from: this.address,
+                  to: to
+                });
+
+              case 1:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4, this);
+      }));
+
+      function sendAdc(_x2, _x3) {
+        return _sendAdc.apply(this, arguments);
+      }
+
+      return sendAdc;
+    }()
+  }, {
     key: "hasAddress",
     get: function get() {
       return this.address !== null;
@@ -1429,7 +1533,8 @@ Object(mobx__WEBPACK_IMPORTED_MODULE_0__["decorate"])(AdcInfoStore, {
   createWallet: mobx_task__WEBPACK_IMPORTED_MODULE_1__["task"],
   hasAddress: mobx__WEBPACK_IMPORTED_MODULE_0__["computed"],
   init: mobx_task__WEBPACK_IMPORTED_MODULE_1__["task"],
-  loadAddressData: mobx_task__WEBPACK_IMPORTED_MODULE_1__["task"]
+  loadAddressData: mobx_task__WEBPACK_IMPORTED_MODULE_1__["task"],
+  sendAdc: mobx_task__WEBPACK_IMPORTED_MODULE_1__["task"]
 });
 
 /***/ }),
@@ -1544,6 +1649,17 @@ module.exports = require("@material-ui/core/colors/red");
 /***/ (function(module, exports) {
 
 module.exports = require("@material-ui/core/styles");
+
+/***/ }),
+
+/***/ "body-parser":
+/*!******************************!*\
+  !*** external "body-parser" ***!
+  \******************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("body-parser");
 
 /***/ }),
 

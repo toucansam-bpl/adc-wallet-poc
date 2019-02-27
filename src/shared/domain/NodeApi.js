@@ -3,18 +3,26 @@ import qs from 'querystring'
 
 const api = '/adc'
 
-async function makeApiRequest(url, params) {
+async function makeApiRequest(url, params, method = 'GET') {
   return new Promise(async (resolve, reject) => {
     try {
-      console.log(params)
-      const query = params ? `?${qs.stringify(params)}` : ''
-      const requestUrl = `${api}/${url}${query}`
+      let requestUrl = `${api}/${url}`
+      const args = {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        method,
+      }
 
-      console.log(`Requesting ${requestUrl}`)
-      const rawResponse = await fetch(requestUrl, {
-        method: 'GET',
-      })
-      console.log(rawResponse.ok, rawResponse.status)
+      if (method === 'GET') {
+        requestUrl = `${requestUrl}?${qs.stringify(params)}`
+      } else {
+        args.body = JSON.stringify(params)
+      }
+
+      console.log(args)
+      const rawResponse = await fetch(requestUrl, args)
 
       if (rawResponse.ok) {
         const response = await rawResponse.json()
@@ -23,7 +31,6 @@ async function makeApiRequest(url, params) {
         reject(new Error(`Request did not complete successfully.`))
       }
     } catch (err) {
-      console.log('ERROR: ', err)
       reject(err)
     }
   })
@@ -43,5 +50,9 @@ export default class NodeApi {
   async getBalance(address) {
     return new Promise((y,n) => y({ balance: 2 }))
     // return makeApiRequest('getBalance', { address })
+  }
+
+  async sendAdc(tx) {
+    return makeApiRequest('sendAdc', tx, 'POST')
   }
 }

@@ -37,4 +37,13 @@ app.get('/getInfo', async (req, res, next) => {
   }
 })
 
+app.post('/sendAdc', async (req, res, next) => {
+  try {
+    console.log('Sending adc', req.body)
+    res.json({ success: true })
+  } catch (ex) {
+    next(ex)
+  }
+})
+
 export default app

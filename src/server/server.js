@@ -1,3 +1,4 @@
+import bodyParser from 'body-parser'
 import express from 'express'
 
 import adc from './adcApi'
@@ -5,6 +6,8 @@ import renderer from './middleware/renderer'
 
 
 const app = express()
+
+app.use(bodyParser.json())
 
 app.get('^/$', renderer)
 app.use('/adc', adc)

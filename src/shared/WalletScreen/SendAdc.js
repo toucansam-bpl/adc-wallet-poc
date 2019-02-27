@@ -42,6 +42,8 @@ class SendAdc extends Component {
   }
 
   handleSendAdc = () => {
+    const { adcInfoStore } = this.props
+
     this.validate()
     this.setState(s => {
       return {
@@ -50,7 +52,7 @@ class SendAdc extends Component {
         hasBeenSubmitted: true,
       }
     }, () => {
-      console.log('after set state with validate', this.state)
+      adcInfoStore.sendAdc(this.state.sendTo, parseFloat(this.state.sendAmount))
     })
   }
 

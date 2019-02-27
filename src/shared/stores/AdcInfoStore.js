@@ -43,6 +43,14 @@ export default class AdcInfoStore {
       this.balance = balance.balance
     })
   }
+
+  async sendAdc(to, amount) {
+    this.nodeApi.sendAdc({
+      amount,
+      from: this.address,
+      to,
+    })
+  }
 }
 
 decorate(AdcInfoStore, {
@@ -52,4 +60,5 @@ decorate(AdcInfoStore, {
   hasAddress: computed,
   init: task,
   loadAddressData: task,
+  sendAdc: task,
 })
