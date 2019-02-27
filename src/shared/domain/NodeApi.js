@@ -37,8 +37,8 @@ async function makeApiRequest(url, params, method = 'GET') {
 
 export default class NodeApi {
   async createNewAddress() {
-    return new Promise((y,n) => y({ address: 'Aev2bvXGeVEtqaBKXBM8xDPJ5BCLKCZvzB' }))
-    // return makeApiRequest('createNewAddress')
+    // return new Promise((y,n) => y({ address: 'Aev2bvXGeVEtqaBKXBM8xDPJ5BCLKCZvzB' }))
+    return makeApiRequest('createNewAddress')
   }
 
   async getInfo() {

@@ -94806,11 +94806,7 @@ function () {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                return _context.abrupt("return", new Promise(function (y, n) {
-                  return y({
-                    address: 'Aev2bvXGeVEtqaBKXBM8xDPJ5BCLKCZvzB'
-                  });
-                }));
+                return _context.abrupt("return", makeApiRequest('createNewAddress'));
 
               case 1:
               case "end":
@@ -95068,7 +95064,7 @@ function () {
       regeneratorRuntime.mark(function _callee4(to, amount) {
         var _this3 = this;
 
-        var txId;
+        var tx;
         return regeneratorRuntime.wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
@@ -95081,12 +95077,13 @@ function () {
                 });
 
               case 2:
-                txId = _context4.sent;
+                tx = _context4.sent;
+                console.log(tx);
                 Object(mobx__WEBPACK_IMPORTED_MODULE_0__["runInAction"])(function () {
-                  _this3.transactionId = txId;
+                  _this3.transactionId = tx.txId;
                 });
 
-              case 4:
+              case 5:
               case "end":
                 return _context4.stop();
             }

@@ -50,14 +50,15 @@ export default class AdcInfoStore {
   }
 
   async sendAdc(to, amount) {
-    const txId = await this.nodeApi.sendAdc({
+    const tx = await this.nodeApi.sendAdc({
       amount,
       from: this.address,
       to,
     })
+    console.log(tx)
 
     runInAction(() => {
-      this.transactionId = txId
+      this.transactionId = tx.txId
     })
   }
 }
