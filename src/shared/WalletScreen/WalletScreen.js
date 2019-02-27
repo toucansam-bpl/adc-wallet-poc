@@ -6,7 +6,7 @@ import SendAdc from './SendAdc';
 
 class WalletScreen extends Component {
   componentDidMount() {
-    this.props.adcInfoStore.loadAddressData()
+    this.props.adcInfoStore.loadAddressData(this.props.match.params.address)
   }
 
   render() {

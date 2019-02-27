@@ -35,10 +35,11 @@ export default class AdcInfoStore {
     return this.address !== null
   }
 
-  async loadAddressData() {
-    const balance = await this.nodeApi.getBalance(this.address)
+  async loadAddressData(address) {
+    const balance = await this.nodeApi.getBalance(address)
     
     runInAction(() => {
+      this.address = address
       this.balance = balance.balance
     })
   }

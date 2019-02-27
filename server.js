@@ -981,7 +981,7 @@ function (_Component) {
   _createClass(WalletScreen, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-      this.props.adcInfoStore.loadAddressData();
+      this.props.adcInfoStore.loadAddressData(this.props.match.params.address);
     }
   }, {
     key: "render",
@@ -1356,7 +1356,7 @@ function () {
     value: function () {
       var _loadAddressData = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee3() {
+      regeneratorRuntime.mark(function _callee3(address) {
         var _this2 = this;
 
         var balance;
@@ -1365,11 +1365,12 @@ function () {
             switch (_context3.prev = _context3.next) {
               case 0:
                 _context3.next = 2;
-                return this.nodeApi.getBalance(this.address);
+                return this.nodeApi.getBalance(address);
 
               case 2:
                 balance = _context3.sent;
                 Object(mobx__WEBPACK_IMPORTED_MODULE_0__["runInAction"])(function () {
+                  _this2.address = address;
                   _this2.balance = balance.balance;
                 });
 
@@ -1381,7 +1382,7 @@ function () {
         }, _callee3, this);
       }));
 
-      function loadAddressData() {
+      function loadAddressData(_x) {
         return _loadAddressData.apply(this, arguments);
       }
 
