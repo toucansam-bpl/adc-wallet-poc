@@ -94651,12 +94651,9 @@ function (_Component) {
       }, "Balance: ".concat(adcInfoStore.balance.toFixed(8)))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Grid"], {
         item: true,
         xs: 6
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_SendAdc__WEBPACK_IMPORTED_MODULE_3__["default"], null)))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Grid"], {
-        item: true,
-        xs: 12
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Typography"], {
-        variant: "headline"
-      }, "Transactions"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Card"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["CardContent"], null, "Hi"))));
+      }, adcInfoStore.hasTransaction ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Typography"], {
+        variant: "h5"
+      }, "Transaction Id: ", adcInfoStore.transactionId) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_SendAdc__WEBPACK_IMPORTED_MODULE_3__["default"], null)))));
     }
   }]);
 
@@ -94839,9 +94836,7 @@ function () {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                return _context2.abrupt("return", new Promise(function (y, n) {
-                  return y({});
-                }));
+                return _context2.abrupt("return", makeApiRequest('getInfo'));
 
               case 1:
               case "end":
@@ -94955,6 +94950,7 @@ function () {
     this.address = null;
     this.balance = 0;
     this.isNodeActive = false;
+    this.transactionId = null;
     this.nodeApi = nodeApi;
   }
 
@@ -95070,17 +95066,27 @@ function () {
       var _sendAdc = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee4(to, amount) {
+        var _this3 = this;
+
+        var txId;
         return regeneratorRuntime.wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
-                this.nodeApi.sendAdc({
+                _context4.next = 2;
+                return this.nodeApi.sendAdc({
                   amount: amount,
                   from: this.address,
                   to: to
                 });
 
-              case 1:
+              case 2:
+                txId = _context4.sent;
+                Object(mobx__WEBPACK_IMPORTED_MODULE_0__["runInAction"])(function () {
+                  _this3.transactionId = txId;
+                });
+
+              case 4:
               case "end":
                 return _context4.stop();
             }
@@ -95099,6 +95105,11 @@ function () {
     get: function get() {
       return this.address !== null;
     }
+  }, {
+    key: "hasTransaction",
+    get: function get() {
+      return this.transactionId !== null;
+    }
   }]);
 
   return AdcInfoStore;
@@ -95110,9 +95121,11 @@ Object(mobx__WEBPACK_IMPORTED_MODULE_0__["decorate"])(AdcInfoStore, {
   balance: mobx__WEBPACK_IMPORTED_MODULE_0__["observable"],
   createWallet: mobx_task__WEBPACK_IMPORTED_MODULE_1__["task"],
   hasAddress: mobx__WEBPACK_IMPORTED_MODULE_0__["computed"],
+  hasTransaction: mobx__WEBPACK_IMPORTED_MODULE_0__["computed"],
   init: mobx_task__WEBPACK_IMPORTED_MODULE_1__["task"],
   loadAddressData: mobx_task__WEBPACK_IMPORTED_MODULE_1__["task"],
-  sendAdc: mobx_task__WEBPACK_IMPORTED_MODULE_1__["task"]
+  sendAdc: mobx_task__WEBPACK_IMPORTED_MODULE_1__["task"],
+  transactionId: mobx__WEBPACK_IMPORTED_MODULE_0__["observable"]
 });
 
 /***/ }),

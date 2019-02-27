@@ -11,6 +11,7 @@ export default class AdcInfoStore {
   address = null
   balance = 0
   isNodeActive = false
+  transactionId = null
 
   constructor(nodeApi) {
     this.nodeApi = nodeApi
@@ -35,6 +36,10 @@ export default class AdcInfoStore {
     return this.address !== null
   }
 
+  get hasTransaction() {
+    return this.transactionId !== null
+  }
+
   async loadAddressData(address) {
     const balance = await this.nodeApi.getBalance(address)
     
@@ -45,10 +50,14 @@ export default class AdcInfoStore {
   }
 
   async sendAdc(to, amount) {
-    this.nodeApi.sendAdc({
+    const txId = await this.nodeApi.sendAdc({
       amount,
       from: this.address,
       to,
+    })
+
+    runInAction(() => {
+      this.transactionId = txId
     })
   }
 }
@@ -58,7 +67,9 @@ decorate(AdcInfoStore, {
   balance: observable,
   createWallet: task,
   hasAddress: computed,
+  hasTransaction: computed,
   init: task,
   loadAddressData: task,
   sendAdc: task,
+  transactionId: observable,
 })

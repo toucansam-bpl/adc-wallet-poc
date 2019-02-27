@@ -40,7 +40,8 @@ app.get('/getInfo', async (req, res, next) => {
 app.post('/sendAdc', async (req, res, next) => {
   try {
     console.log('Sending adc', req.body)
-    res.json({ success: true })
+    const txId = await adc.sendAdc(req.body)
+    res.json({ txId })
   } catch (ex) {
     next(ex)
   }

@@ -29,19 +29,17 @@ class WalletScreen extends Component {
             </Card>
           </Grid>
           <Grid item xs={6}>
-            <SendAdc />
+            {adcInfoStore.hasTransaction
+              ? (
+                <Typography variant="h5">
+                  Transaction Id: {adcInfoStore.transactionId}
+                </Typography>
+              ) : (
+                <SendAdc />
+              )
+            }
           </Grid>
         </Grid>
-        </Grid>
-        <Grid item xs={12}>
-          <Typography variant="headline">
-            {`Transactions`}
-          </Typography>
-          <Card>
-            <CardContent>
-              Hi
-            </CardContent>
-          </Card>
         </Grid>
       </Grid>
     )
