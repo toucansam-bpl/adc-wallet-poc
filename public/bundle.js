@@ -94503,7 +94503,9 @@ function (_Component) {
           hasBeenSubmitted: true
         });
       }, function () {
-        adcInfoStore.sendAdc(_this.state.sendTo, parseFloat(_this.state.sendAmount));
+        if (_this.state.sendAmountIsValid && _this.state.sendToIsValid) {
+          adcInfoStore.sendAdc(_this.state.sendTo, parseFloat(_this.state.sendAmount));
+        }
       });
     };
 

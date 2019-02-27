@@ -52,7 +52,9 @@ class SendAdc extends Component {
         hasBeenSubmitted: true,
       }
     }, () => {
-      adcInfoStore.sendAdc(this.state.sendTo, parseFloat(this.state.sendAmount))
+      if (this.state.sendAmountIsValid && this.state.sendToIsValid) {
+        adcInfoStore.sendAdc(this.state.sendTo, parseFloat(this.state.sendAmount))
+      }
     })
   }
 
