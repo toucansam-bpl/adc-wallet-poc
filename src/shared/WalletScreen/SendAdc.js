@@ -68,10 +68,6 @@ class SendAdc extends Component {
     })
   }
 
-  componentDidMount() {
-    this.props.adcInfoStore.loadAddressData()
-  }
-
   render() {
     const { classes, } = this.props
 

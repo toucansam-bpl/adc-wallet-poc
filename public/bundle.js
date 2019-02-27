@@ -94523,11 +94523,6 @@ function (_Component) {
       });
     }
   }, {
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      this.props.adcInfoStore.loadAddressData();
-    }
-  }, {
     key: "render",
     value: function render() {
       var _this2 = this;
@@ -94844,7 +94839,9 @@ function () {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                return _context2.abrupt("return", makeApiRequest('getInfo'));
+                return _context2.abrupt("return", new Promise(function (y, n) {
+                  return y({});
+                }));
 
               case 1:
               case "end":
