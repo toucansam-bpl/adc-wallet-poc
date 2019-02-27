@@ -38,10 +38,32 @@ class SendAdc extends Component {
         [name]: val,
       }
     })
+    this.validate()
   }
 
-  handleSendAdc = evt => {
+  handleSendAdc = () => {
+    this.validate()
+    this.setState(s => {
+      return {
+        ... s,
 
+        hasBeenSubmitted: true,
+      }
+    }, () => {
+      console.log('after set state with validate', this.state)
+    })
+  }
+
+  validate() {
+    const { adcInfoStore } = this.props
+
+    this.setState(s => {
+      const sendAmount = parseFloat(s.sendAmount) 
+      return {
+        sendAmountIsValid: sendAmount > 0 && sendAmount <= adcInfoStore.balance - 0.01,
+        sendToIsValid: s.sendTo.length === 34 && s.sendTo[0] === 'A',
+      }
+    })
   }
 
   componentDidMount() {
@@ -49,7 +71,7 @@ class SendAdc extends Component {
   }
 
   render() {
-    const { adcInfoStore, classes, } = this.props
+    const { classes, } = this.props
 
     return (
       <Paper>
@@ -61,7 +83,7 @@ class SendAdc extends Component {
           <TextField
             id="send-to"
             className={classes.textField}
-            error={!this.state.sendToIsValid}
+            error={this.state.hasBeenSubmitted && !this.state.sendToIsValid}
             fullWidth
             label="Send To"
             onChange={this.handleChange('sendTo')}
@@ -73,7 +95,7 @@ class SendAdc extends Component {
           <TextField
             id="send-amount"
             className={classes.textField}
-            error={!this.state.sendAmountIsValid}
+            error={this.state.hasBeenSubmitted && !this.state.sendAmountIsValid}
             label="Amount"
             onChange={this.handleChange('sendAmount')}
             margin="normal"
@@ -85,7 +107,7 @@ class SendAdc extends Component {
           <Button
             className={classes.button}
             color="secondary"
-            onClick={evt => console.log(evt)}
+            onClick={() => this.handleSendAdc()}
             variant="contained"
           >
             Send ADC

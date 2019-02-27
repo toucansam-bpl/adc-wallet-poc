@@ -864,15 +864,39 @@ function (_Component) {
         _this.setState(function (s) {
           return _objectSpread({}, s, _defineProperty({}, name, val));
         });
+
+        _this.validate();
       };
     };
 
-    _this.handleSendAdc = function (evt) {};
+    _this.handleSendAdc = function () {
+      _this.validate();
+
+      _this.setState(function (s) {
+        return _objectSpread({}, s, {
+          hasBeenSubmitted: true
+        });
+      }, function () {
+        console.log('after set state with validate', _this.state);
+      });
+    };
 
     return _this;
   }
 
   _createClass(SendAdc, [{
+    key: "validate",
+    value: function validate() {
+      var adcInfoStore = this.props.adcInfoStore;
+      this.setState(function (s) {
+        var sendAmount = parseFloat(s.sendAmount);
+        return {
+          sendAmountIsValid: sendAmount > 0 && sendAmount <= adcInfoStore.balance - 0.01,
+          sendToIsValid: s.sendTo.length === 34 && s.sendTo[0] === 'A'
+        };
+      });
+    }
+  }, {
     key: "componentDidMount",
     value: function componentDidMount() {
       this.props.adcInfoStore.loadAddressData();
@@ -880,9 +904,9 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this$props = this.props,
-          adcInfoStore = _this$props.adcInfoStore,
-          classes = _this$props.classes;
+      var _this2 = this;
+
+      var classes = this.props.classes;
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Paper"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Typography"], {
         className: classes.header,
         variant: "headline"
@@ -893,7 +917,7 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["TextField"], {
         id: "send-to",
         className: classes.textField,
-        error: !this.state.sendToIsValid,
+        error: this.state.hasBeenSubmitted && !this.state.sendToIsValid,
         fullWidth: true,
         label: "Send To",
         onChange: this.handleChange('sendTo'),
@@ -903,7 +927,7 @@ function (_Component) {
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["TextField"], {
         id: "send-amount",
         className: classes.textField,
-        error: !this.state.sendAmountIsValid,
+        error: this.state.hasBeenSubmitted && !this.state.sendAmountIsValid,
         label: "Amount",
         onChange: this.handleChange('sendAmount'),
         margin: "normal",
@@ -913,8 +937,8 @@ function (_Component) {
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Button"], {
         className: classes.button,
         color: "secondary",
-        onClick: function onClick(evt) {
-          return console.log(evt);
+        onClick: function onClick() {
+          return _this2.handleSendAdc();
         },
         variant: "contained"
       }, "Send ADC")));
